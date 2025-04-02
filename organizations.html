@@ -384,7 +384,7 @@
         }
         
         /* Role-specific element styles */
-        .admin-only, .manager-only, .analyst-only, .user-only {
+        .admin-only, .manager-only, .analyst-only, .user-only, .non-admin-only, .non-manager-only {
             display: none;
         }
     </style>
@@ -401,21 +401,17 @@
         </div>
         
         <ul class="nav-menu">
-            <li class="nav-item">
+            <li class="nav-item non-admin-only">
                 <a href="dashboard.html" class="nav-link">
                     <i>📊</i> Dashboard
                 </a>
             </li>
             <li class="nav-item admin-only">
-                <a href="organizations.html" class="nav-link">
+                <a href="organizations.html" class="nav-link active">
                     <i>🏢</i> Organizations
                 </a>
             </li>
-            <li class="nav-item analyst-only user-only">
-                <a href="users.html" class="nav-link">
-                    <i>👥</i> Users
-                </a>
-            </li>
+            
             <li class="nav-item non-admin-only">
                 <a href="devices.html" class="nav-link">
                     <i>💻</i> Devices
@@ -441,11 +437,7 @@
                     <i>📝</i> Reports
                 </a>
             </li>
-            <li class="nav-item admin-only manager-only">
-                <a href="settings.html" class="nav-link">
-                    <i>⚙️</i> Settings
-                </a>
-            </li>
+            
         </ul>
     </div>
     
@@ -465,7 +457,7 @@
                 <input type="text" class="search-input" placeholder="Search organizations...">
             </div>
             
-            <button class="add-btn" id="addOrgBtn">
+            <button class="add-btn admin-only" id="addOrgBtn">
                 <i>➕</i> Add Organization
             </button>
         </div>
@@ -491,8 +483,9 @@
                     <td>john.doe@example.com</td>
                     <td><span class="status-badge status-active">Standard</span></td>
                     <td>
-                        <button class="action-btn">✏️</button>
-                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn admin-only">✏️</button>
+                        <button class="action-btn admin-only">🗑️</button>
+                        <button class="action-btn">📊</button>
                     </td>
                 </tr>
                 <tr>
@@ -503,8 +496,9 @@
                     <td>info@mombasa-trading.com</td>
                     <td><span class="status-badge status-active">Premium</span></td>
                     <td>
-                        <button class="action-btn">✏️</button>
-                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn admin-only">✏️</button>
+                        <button class="action-btn admin-only">🗑️</button>
+                        <button class="action-btn">📊</button>
                     </td>
                 </tr>
                 <tr>
@@ -515,8 +509,9 @@
                     <td>support@kilimo.co.ke</td>
                     <td><span class="status-badge status-active">Basic</span></td>
                     <td>
-                        <button class="action-btn">✏️</button>
-                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn admin-only">✏️</button>
+                        <button class="action-btn admin-only">🗑️</button>
+                        <button class="action-btn">📊</button>
                     </td>
                 </tr>
                 <tr>
@@ -527,8 +522,9 @@
                     <td>contact@nakuru-mfg.com</td>
                     <td><span class="status-badge status-expired">Expired</span></td>
                     <td>
-                        <button class="action-btn">✏️</button>
-                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn admin-only">✏️</button>
+                        <button class="action-btn admin-only">🗑️</button>
+                        <button class="action-btn">📊</button>
                     </td>
                 </tr>
                 <tr>
@@ -539,8 +535,9 @@
                     <td>info@eldoret-logistics.co.ke</td>
                     <td><span class="status-badge status-pending">Pending</span></td>
                     <td>
-                        <button class="action-btn">✏️</button>
-                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn admin-only">✏️</button>
+                        <button class="action-btn admin-only">🗑️</button>
+                        <button class="action-btn">📊</button>
                     </td>
                 </tr>
             </tbody>
@@ -684,8 +681,8 @@
                 return;
             }
             
-            // Only admin should access this page
-            if (userRole !== 'admin') {
+            // Only admin should access this page fully, managers can view only
+            if (userRole !== 'admin' && userRole !== 'manager') {
                 window.location.href = 'dashboard.html';
                 return;
             }
@@ -695,30 +692,29 @@
             document.getElementById('userRole').textContent = `(${userRole})`;
             
             // Show/hide role-specific elements
-            // Show/hide role-specific elements
-const adminElements = document.querySelectorAll('.admin-only');
-const managerElements = document.querySelectorAll('.manager-only');
-const analystElements = document.querySelectorAll('.analyst-only');
-const userElements = document.querySelectorAll('.user-only');
-const nonAdminElements = document.querySelectorAll('.non-admin-only');
-const nonManagerElements = document.querySelectorAll('.non-manager-only');
+            const adminElements = document.querySelectorAll('.admin-only');
+            const managerElements = document.querySelectorAll('.manager-only');
+            const analystElements = document.querySelectorAll('.analyst-only');
+            const userElements = document.querySelectorAll('.user-only');
+            const nonAdminElements = document.querySelectorAll('.non-admin-only');
+            const nonManagerElements = document.querySelectorAll('.non-manager-only');
 
-if (userRole === 'admin') {
-    adminElements.forEach(el => el.style.display = 'block');
-    managerElements.forEach(el => el.style.display = 'block');
-    analystElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'manager') {
-    managerElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'analyst') {
-    analystElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'user') {
-    userElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-}
+            if (userRole === 'admin') {
+                adminElements.forEach(el => el.style.display = 'block');
+                managerElements.forEach(el => el.style.display = 'block');
+                analystElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'manager') {
+                managerElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'analyst') {
+                analystElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+                nonManagerElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'user') {
+                userElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+                nonManagerElements.forEach(el => el.style.display = 'block');
+            }
             
             // Logout handler
             document.getElementById('logoutBtn').addEventListener('click', function() {
@@ -733,17 +729,21 @@ if (userRole === 'admin') {
             const closeBtn = document.querySelector('.close-btn');
             const cancelBtn = document.getElementById('cancelBtn');
             
-            addOrgBtn.addEventListener('click', function() {
-                modal.style.display = 'block';
-            });
+            if (addOrgBtn) {
+                addOrgBtn.addEventListener('click', function() {
+                    modal.style.display = 'block';
+                });
+            }
             
             closeBtn.addEventListener('click', function() {
                 modal.style.display = 'none';
             });
             
-            cancelBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
             
             window.addEventListener('click', function(event) {
                 if (event.target === modal) {
@@ -752,12 +752,15 @@ if (userRole === 'admin') {
             });
             
             // Form handler
-            document.getElementById('organizationForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Process form data here
-                // For demo, just close the modal
-                modal.style.display = 'none';
-            });
+            const organizationForm = document.getElementById('organizationForm');
+            if (organizationForm) {
+                organizationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Process form data here
+                    // For demo, just close the modal
+                    modal.style.display = 'none';
+                });
+            }
         });
     </script>
 </body>

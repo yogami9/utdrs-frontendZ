@@ -684,7 +684,7 @@
             const userRole = localStorage.getItem('userRole') || 'user';
             
             if (!isAuthenticated) {
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
                 return;
             }
             
@@ -716,7 +716,7 @@
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('isAuthenticated');
                 localStorage.removeItem('userRole');
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             });
             
             // Modal handlers

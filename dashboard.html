@@ -256,7 +256,7 @@
         </div>
         
         <ul class="nav-menu">
-            <li class="nav-item">
+            <li class="nav-item non-admin-only">
                 <a href="dashboard.html" class="nav-link active">
                     <i>📊</i> Dashboard
                 </a>
@@ -296,7 +296,7 @@
                     <i>📝</i> Reports
                 </a>
             </li>
-            <li class="nav-item admin-only manager-only">
+            <li class="nav-item non-admin-only manager-only">
                 <a href="settings.html" class="nav-link">
                     <i>⚙️</i> Settings
                 </a>
@@ -462,7 +462,7 @@
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('isAuthenticated');
                 localStorage.removeItem('userRole');
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             });
         });
     </script>

@@ -488,7 +488,7 @@
         }
         
         /* Role-specific element styles */
-        .admin-only, .manager-only, .analyst-only, .user-only {
+        .admin-only, .manager-only, .analyst-only, .user-only, .non-admin-only, .non-manager-only {
             display: none;
         }
     </style>
@@ -505,7 +505,7 @@
         </div>
         
         <ul class="nav-menu">
-            <li class="nav-item">
+            <li class="nav-item non-admin-only">
                 <a href="dashboard.html" class="nav-link">
                     <i>📊</i> Dashboard
                 </a>
@@ -515,11 +515,7 @@
                     <i>🏢</i> Organizations
                 </a>
             </li>
-            <li class="nav-item analyst-only user-only">
-                <a href="users.html" class="nav-link">
-                    <i>👥</i> Users
-                </a>
-            </li>
+            
             <li class="nav-item non-admin-only">
                 <a href="devices.html" class="nav-link">
                     <i>💻</i> Devices
@@ -536,7 +532,7 @@
                 </a>
             </li>
             <li class="nav-item analyst-only user-only admin-only">
-                <a href="ai-models.html" class="nav-link">
+                <a href="ai-models.html" class="nav-link active">
                     <i>🤖</i> AI Models
                 </a>
             </li>
@@ -545,11 +541,7 @@
                     <i>📝</i> Reports
                 </a>
             </li>
-            <li class="nav-item admin-only manager-only">
-                <a href="settings.html" class="nav-link">
-                    <i>⚙️</i> Settings
-                </a>
-            </li>
+            
         </ul>
     </div>
     
@@ -569,7 +561,7 @@
                 <input type="text" class="search-input" placeholder="Search AI models...">
             </div>
             
-            <button class="add-btn" id="addModelBtn">
+            <button class="add-btn admin-only" id="addModelBtn">
                 <i>➕</i> Add Model
             </button>
         </div>
@@ -613,7 +605,7 @@
                 <div class="model-actions">
                     <button class="action-btn">Details</button>
                     <button class="action-btn primary">Use</button>
-                    <button class="action-btn danger">Deprecate</button>
+                    <button class="action-btn danger admin-only">Deprecate</button>
                 </div>
             </div>
             
@@ -656,7 +648,7 @@
                 <div class="model-actions">
                     <button class="action-btn">Details</button>
                     <button class="action-btn primary">Use</button>
-                    <button class="action-btn danger">Deprecate</button>
+                    <button class="action-btn danger admin-only">Deprecate</button>
                 </div>
             </div>
             
@@ -698,7 +690,7 @@
                 <div class="model-actions">
                     <button class="action-btn">Details</button>
                     <button class="action-btn primary">Use</button>
-                    <button class="action-btn danger">Deprecate</button>
+                    <button class="action-btn danger admin-only">Deprecate</button>
                 </div>
             </div>
             
@@ -778,7 +770,7 @@
                 
                 <div class="model-actions">
                     <button class="action-btn">Details</button>
-                    <button class="action-btn primary">Reactivate</button>
+                    <button class="action-btn primary admin-only">Reactivate</button>
                 </div>
             </div>
         </div>
@@ -908,8 +900,8 @@
                 return;
             }
             
-            // Only admin, manager, and analyst should access this page
-            if (userRole !== 'admin' && userRole !== 'manager' && userRole !== 'analyst') {
+            // Only certain roles can access this page
+            if (userRole !== 'admin' && userRole !== 'analyst' && userRole !== 'user') {
                 window.location.href = 'dashboard.html';
                 return;
             }
@@ -919,30 +911,29 @@
             document.getElementById('userRole').textContent = `(${userRole})`;
             
             // Show/hide role-specific elements
-            // Show/hide role-specific elements
-const adminElements = document.querySelectorAll('.admin-only');
-const managerElements = document.querySelectorAll('.manager-only');
-const analystElements = document.querySelectorAll('.analyst-only');
-const userElements = document.querySelectorAll('.user-only');
-const nonAdminElements = document.querySelectorAll('.non-admin-only');
-const nonManagerElements = document.querySelectorAll('.non-manager-only');
+            const adminElements = document.querySelectorAll('.admin-only');
+            const managerElements = document.querySelectorAll('.manager-only');
+            const analystElements = document.querySelectorAll('.analyst-only');
+            const userElements = document.querySelectorAll('.user-only');
+            const nonAdminElements = document.querySelectorAll('.non-admin-only');
+            const nonManagerElements = document.querySelectorAll('.non-manager-only');
 
-if (userRole === 'admin') {
-    adminElements.forEach(el => el.style.display = 'block');
-    managerElements.forEach(el => el.style.display = 'block');
-    analystElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'manager') {
-    managerElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'analyst') {
-    analystElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'user') {
-    userElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-}
+            if (userRole === 'admin') {
+                adminElements.forEach(el => el.style.display = 'block');
+                managerElements.forEach(el => el.style.display = 'block');
+                analystElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'manager') {
+                managerElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'analyst') {
+                analystElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+                nonManagerElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'user') {
+                userElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+                nonManagerElements.forEach(el => el.style.display = 'block');
+            }
             
             // Logout handler
             document.getElementById('logoutBtn').addEventListener('click', function() {
@@ -957,17 +948,23 @@ if (userRole === 'admin') {
             const closeBtn = document.querySelector('.close-btn');
             const cancelBtn = document.getElementById('cancelBtn');
             
-            addModelBtn.addEventListener('click', function() {
-                modal.style.display = 'block';
-            });
+            if (addModelBtn) {
+                addModelBtn.addEventListener('click', function() {
+                    modal.style.display = 'block';
+                });
+            }
             
-            closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
             
-            cancelBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
             
             window.addEventListener('click', function(event) {
                 if (event.target === modal) {
@@ -975,13 +972,16 @@ if (userRole === 'admin') {
                 }
             });
             
-            // Form handler
-            document.getElementById('modelForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Process form data here
-                // For demo, just close the modal
-                modal.style.display = 'none';
-            });
+            // Form submission handler
+            const modelForm = document.getElementById('modelForm');
+            if (modelForm) {
+                modelForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Process form data here
+                    // For demo, just close the modal
+                    modal.style.display = 'none';
+                });
+            }
         });
     </script>
 </body>

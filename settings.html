@@ -518,11 +518,7 @@
                     <i>🏢</i> Organizations
                 </a>
             </li>
-            <li class="nav-item analyst-only user-only">
-                <a href="users.html" class="nav-link">
-                    <i>👥</i> Users
-                </a>
-            </li>
+            
             <li class="nav-item non-admin-only">
                 <a href="devices.html" class="nav-link">
                     <i>💻</i> Devices
@@ -539,7 +535,7 @@
                 </a>
             </li>
             <li class="nav-item analyst-only user-only admin-only">
-                <a href="ai-models.html" class="nav-link">
+                <a href="ai-models.html" class="nav-link active">
                     <i>🤖</i> AI Models
                 </a>
             </li>
@@ -548,7 +544,7 @@
                     <i>📝</i> Reports
                 </a>
             </li>
-            <li class="nav-item admin-only manager-only">
+            <li class="nav-item non-admin-only manager-only">
                 <a href="settings.html" class="nav-link">
                     <i>⚙️</i> Settings
                 </a>
@@ -1205,7 +1201,7 @@
             const userRole = localStorage.getItem('userRole') || 'user';
             
             if (!isAuthenticated) {
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
                 return;
             }
             
@@ -1220,36 +1216,36 @@
             document.getElementById('userRole').textContent = `(${userRole})`;
             
             // Show/hide role-specific elements
-            // Show/hide role-specific elements
-const adminElements = document.querySelectorAll('.admin-only');
-const managerElements = document.querySelectorAll('.manager-only');
-const analystElements = document.querySelectorAll('.analyst-only');
-const userElements = document.querySelectorAll('.user-only');
-const nonAdminElements = document.querySelectorAll('.non-admin-only');
-const nonManagerElements = document.querySelectorAll('.non-manager-only');
+            const adminElements = document.querySelectorAll('.admin-only');
+            const managerElements = document.querySelectorAll('.manager-only');
+            const analystElements = document.querySelectorAll('.analyst-only');
+            const userElements = document.querySelectorAll('.user-only');
+            const nonAdminElements = document.querySelectorAll('.non-admin-only');
+            const nonManagerElements = document.querySelectorAll('.non-manager-only');
 
-if (userRole === 'admin') {
-    adminElements.forEach(el => el.style.display = 'block');
-    managerElements.forEach(el => el.style.display = 'block');
-    analystElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'manager') {
-    managerElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'analyst') {
-    analystElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'user') {
-    userElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-}
+            if (userRole === 'admin') {
+                adminElements.forEach(el => el.style.display = 'block');
+                managerElements.forEach(el => el.style.display = 'block');
+                analystElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'manager') {
+                managerElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'analyst') {
+                analystElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+                nonManagerElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'user') {
+                userElements.forEach(el => el.style.display = 'block');
+                nonAdminElements.forEach(el => el.style.display = 'block');
+                nonManagerElements.forEach(el => el.style.display = 'block');
+            }
+            
             
             // Logout handler
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('isAuthenticated');
                 localStorage.removeItem('userRole');
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             });
             
             // Settings panel navigation
