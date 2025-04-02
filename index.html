@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya SME Cybersecurity - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(34, 255, 133, 0.5);
+        }
+        
+        button {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1ae077;
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            background-color: rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+                <rect width="100" height="100" rx="20" fill="#22FF85" />
+                <path d="M50 20C33.4315 20 20 33.4315 20 50C20 66.5685 33.4315 80 50 80C66.5685 80 80 66.5685 80 50C80 33.4315 66.5685 20 50 20ZM50 25C63.8071 25 75 36.1929 75 50C75 63.8071 63.8071 75 50 75C36.1929 75 25 63.8071 25 50C25 36.1929 36.1929 25 50 25Z" fill="white" />
+                <path d="M45 60L35 50L40 45L45 50L60 35L65 40L45 60Z" fill="white" />
+            </svg>
+            <h1>kenyasmeutdrs</h1>
+        </div>
+        
+        <div class="error-message" id="error">
+            Invalid email or password. Please try again.
+        </div>
+        
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulate authentication
+            if (email === 'admin@example.com' && password === 'admin123') {
+                localStorage.setItem('userRole', 'admin');
+                localStorage.setItem('isAuthenticated', 'true');
+                window.location.href = 'dashboard.html';
+            } 
+            else if (email === 'manager@example.com' && password === 'manager123') {
+                localStorage.setItem('userRole', 'manager');
+                localStorage.setItem('isAuthenticated', 'true');
+                window.location.href = 'dashboard.html';
+            }
+            else if (email === 'analyst@example.com' && password === 'analyst123') {
+                localStorage.setItem('userRole', 'analyst');
+                localStorage.setItem('isAuthenticated', 'true');
+                window.location.href = 'dashboard.html';
+            }
+            else if (email === 'user@example.com' && password === 'user123') {
+                localStorage.setItem('userRole', 'user');
+                localStorage.setItem('isAuthenticated', 'true');
+                window.location.href = 'dashboard.html';
+            }
+            else {
+                document.getElementById('error').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

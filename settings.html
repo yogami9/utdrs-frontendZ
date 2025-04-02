@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya SME Cybersecurity - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            margin-right: 15px;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .settings-sidebar {
+            width: 250px;
+        }
+        
+        .settings-content {
+            flex: 1;
+            min-width: 500px;
+        }
+        
+        .settings-menu {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .settings-menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .settings-menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-menu-item.active {
+            background-color: rgba(34, 255, 133, 0.1);
+            border-left: 3px solid #22FF85;
+        }
+        
+        .settings-panel {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            display: none;
+        }
+        
+        .settings-panel.active {
+            display: block;
+        }
+        
+        .settings-panel-header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-panel-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .settings-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .settings-section {
+            margin-bottom: 30px;
+        }
+        
+        .settings-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cancel-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .submit-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1ae077;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .settings-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .settings-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .settings-card-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .settings-card-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #22FF85;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .schedule-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        
+        .schedule-day {
+            font-weight: 600;
+        }
+        
+        .schedule-time {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .schedule-action {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .schedule-action:hover {
+            color: #ff5b5c;
+        }
+        
+        .integration-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .integration-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .integration-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .integration-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .integration-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .integration-status {
+            font-size: 12px;
+        }
+        
+        .integration-connected {
+            color: #22FF85;
+        }
+        
+        .integration-disconnected {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .token-list {
+            margin-top: 20px;
+        }
+        
+        .token-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .token-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .token-name {
+            font-weight: 600;
+        }
+        
+        .token-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .token-action {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .token-action:hover {
+            color: #ff5b5c;
+        }
+        
+        .token-info {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .token-field {
+            flex: 1;
+        }
+        
+        .token-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+        }
+        
+        .token-value {
+            font-family: monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* Role-specific element styles */
+        .admin-only, .manager-only, .analyst-only, .user-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100">
+                <rect width="100" height="100" rx="20" fill="#22FF85" />
+                <path d="M50 20C33.4315 20 20 33.4315 20 50C20 66.5685 33.4315 80 50 80C66.5685 80 80 66.5685 80 50C80 33.4315 66.5685 20 50 20ZM50 25C63.8071 25 75 36.1929 75 50C75 63.8071 63.8071 75 50 75C36.1929 75 25 63.8071 25 50C25 36.1929 36.1929 25 50 25Z" fill="white" />
+                <path d="M45 60L35 50L40 45L45 50L60 35L65 40L45 60Z" fill="white" />
+            </svg>
+            <h1>kenyasmeutdrs</h1>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item admin-only">
+                <a href="organizations.html" class="nav-link">
+                    <i>🏢</i> Organizations
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only">
+                <a href="users.html" class="nav-link">
+                    <i>👥</i> Users
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="devices.html" class="nav-link">
+                    <i>💻</i> Devices
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="threats.html" class="nav-link">
+                    <i>⚠️</i> Threats
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="vulnerabilities.html" class="nav-link">
+                    <i>🛡️</i> Vulnerabilities
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only admin-only">
+                <a href="ai-models.html" class="nav-link">
+                    <i>🤖</i> AI Models
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="reports.html" class="nav-link">
+                    <i>📝</i> Reports
+                </a>
+            </li>
+            <li class="nav-item admin-only manager-only">
+                <a href="settings.html" class="nav-link">
+                    <i>⚙️</i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Settings</h1>
+            <div class="user-info">
+                <span class="user-name" id="userName">User</span>
+                <span class="user-role" id="userRole">(Role)</span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="settings-container">
+            <div class="settings-sidebar">
+                <div class="settings-menu">
+                    <div class="settings-menu-item active" data-panel="notification">Notification Settings</div>
+                    <div class="settings-menu-item" data-panel="scanning">Scanning Configuration</div>
+                    <div class="settings-menu-item" data-panel="response">Response Actions</div>
+                    <div class="settings-menu-item" data-panel="reporting">Reporting Settings</div>
+                    <div class="settings-menu-item" data-panel="integrations">Integrations</div>
+                    <div class="settings-menu-item" data-panel="api">API Access</div>
+                    <div class="settings-menu-item admin-only" data-panel="system">System Settings</div>
+                </div>
+            </div>
+            
+            <div class="settings-content">
+                <!-- Notification Settings Panel -->
+                <div class="settings-panel active" id="notification-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">Notification Settings</h2>
+                        <p class="settings-description">Configure how and when you receive security notifications.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Notification Channels</h3>
+                        
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <div class="settings-card-title">Email Notifications</div>
+                                <div class="settings-card-desc">Receive security alerts and reports via email.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">SMS Notifications</div>
+                                <div class="settings-card-desc">Receive critical alerts via SMS.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">In-App Notifications</div>
+                                <div class="settings-card-desc">Show notifications in the dashboard.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Webhook</div>
+                                <div class="settings-card-desc">Send notifications to external systems.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Notification Preferences</h3>
+                        
+                        <div class="form-group">
+                            <label for="criticalAlertsOnly">Alert Level</label>
+                            <select id="criticalAlertsOnly" class="form-control">
+                                <option value="all">All Alerts</option>
+                                <option value="high-critical">High and Critical Only</option>
+                                <option value="critical">Critical Alerts Only</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notificationRecipients">Recipients (comma-separated emails)</label>
+                            <input type="text" id="notificationRecipients" class="form-control" value="admin@example.com, manager@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="digestFrequency">Daily Digest</label>
+                            <select id="digestFrequency" class="form-control">
+                                <option value="none">Don't send daily digest</option>
+                                <option value="morning">Morning (8:00 AM)</option>
+                                <option value="noon" selected>Noon (12:00 PM)</option>
+                                <option value="evening">Evening (6:00 PM)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+                
+                <!-- Scanning Configuration Panel -->
+                <div class="settings-panel" id="scanning-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">Scanning Configuration</h2>
+                        <p class="settings-description">Configure automated security scanning settings.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Scan Schedule</h3>
+                        
+                        <div class="form-group">
+                            <label for="scanFrequency">Scan Frequency</label>
+                            <select id="scanFrequency" class="form-control">
+                                <option value="daily">Daily</option>
+                                <option value="weekly" selected>Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="custom">Custom Schedule</option>
+                            </select>
+                        </div>
+                        
+                        <ul class="schedule-list">
+                            <li class="schedule-item">
+                                <div class="schedule-info">
+                                    <div class="schedule-day">Monday</div>
+                                    <div class="schedule-time">02:00 AM</div>
+                                </div>
+                                <button class="schedule-action">✕</button>
+                            </li>
+                            <li class="schedule-item">
+                                <div class="schedule-info">
+                                    <div class="schedule-day">Thursday</div>
+                                    <div class="schedule-time">03:00 AM</div>
+                                </div>
+                                <button class="schedule-action">✕</button>
+                            </li>
+                            <li class="schedule-item">
+                                <div class="schedule-info">
+                                    <div class="schedule-day">Sunday</div>
+                                    <div class="schedule-time">01:00 AM</div>
+                                </div>
+                                <button class="schedule-action">✕</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="form-actions" style="justify-content: flex-start; margin-top: 10px;">
+                            <button class="submit-btn">Add Schedule</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Scan Types</h3>
+                        
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <div class="settings-card-title">Vulnerability Scan</div>
+                                <div class="settings-card-desc">Scan for known vulnerabilities in systems.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Malware Scan</div>
+                                <div class="settings-card-desc">Scan for malware on endpoints.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Network Scan</div>
+                                <div class="settings-card-desc">Scan for network vulnerabilities.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Configuration Audit</div>
+                                <div class="settings-card-desc">Audit system configurations.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+                
+                <!-- Response Actions Panel -->
+                <div class="settings-panel" id="response-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">Response Actions</h2>
+                        <p class="settings-description">Configure automated response actions for security incidents.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Automated Response</h3>
+                        
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <div class="settings-card-title">Auto Block Malicious IPs</div>
+                                <div class="settings-card-desc">Automatically block IPs detected as malicious.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Isolate Compromised Devices</div>
+                                <div class="settings-card-desc">Automatically isolate devices with critical threats.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Terminate Malicious Processes</div>
+                                <div class="settings-card-desc">Automatically kill processes identified as malicious.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Automated Patching</div>
+                                <div class="settings-card-desc">Automatically apply security patches.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Response Thresholds</h3>
+                        
+                        <div class="form-group">
+                            <label for="criticalThreshold">Critical Threat Threshold</label>
+                            <select id="criticalThreshold" class="form-control">
+                                <option value="any">Any Critical Threat</option>
+                                <option value="verified" selected>Verified Critical Threats</option>
+                                <option value="multiple">Multiple Critical Threats</option>
+                                <option value="none">Manual Response Only</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="highThreshold">High Severity Threshold</label>
+                            <select id="highThreshold" class="form-control">
+                                <option value="any">Any High Severity Threat</option>
+                                <option value="verified">Verified High Severity Threats</option>
+                                <option value="multiple" selected>Multiple High Severity Threats</option>
+                                <option value="none">Manual Response Only</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="approvalRequired">Approval Requirements</label>
+                            <select id="approvalRequired" class="form-control">
+                                <option value="none">No Approval Required</option>
+                                <option value="critical" selected>Required for Critical Actions</option>
+                                <option value="all">Required for All Actions</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+                
+                <!-- Reporting Settings Panel -->
+                <div class="settings-panel" id="reporting-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">Reporting Settings</h2>
+                        <p class="settings-description">Configure automated security reports and preferences.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Automated Reports</h3>
+                        
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <div class="settings-card-title">Daily Summary</div>
+                                <div class="settings-card-desc">Daily summary of security events.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Weekly Report</div>
+                                <div class="settings-card-desc">Detailed weekly security report.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Monthly Report</div>
+                                <div class="settings-card-desc">Comprehensive monthly security analysis.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="settings-card">
+                                <div class="settings-card-title">Quarterly Compliance</div>
+                                <div class="settings-card-desc">Quarterly compliance assessment reports.</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Report Configuration</h3>
+                        
+                        <div class="form-group">
+                            <label for="reportRecipients">Report Recipients (comma-separated)</label>
+                            <input type="text" id="reportRecipients" class="form-control" value="admin@example.com, manager@example.com, ceo@example.com">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="reportFormat">Report Format</label>
+                                    <select id="reportFormat" class="form-control">
+                                        <option value="pdf" selected>PDF</option>
+                                        <option value="html">HTML</option>
+                                        <option value="csv">CSV</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="reportDetail">Detail Level</label>
+                                    <select id="reportDetail" class="form-control">
+                                        <option value="summary">Summary</option>
+                                        <option value="standard" selected>Standard</option>
+                                        <option value="detailed">Detailed</option>
+                                        <option value="comprehensive">Comprehensive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+                
+                <!-- Integrations Panel -->
+                <div class="settings-panel" id="integrations-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">Integrations</h2>
+                        <p class="settings-description">Connect with other security tools and services.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Available Integrations</h3>
+                        
+                        <div class="integration-list">
+                            <div class="integration-item">
+                                <div class="integration-icon">🔒</div>
+                                <div class="integration-name">Microsoft Defender</div>
+                                <div class="integration-status integration-connected">Connected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">🔍</div>
+                                <div class="integration-name">Splunk</div>
+                                <div class="integration-status integration-disconnected">Disconnected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">🛡️</div>
+                                <div class="integration-name">Cisco Firewall</div>
+                                <div class="integration-status integration-connected">Connected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">🔐</div>
+                                <div class="integration-name">Okta</div>
+                                <div class="integration-status integration-disconnected">Disconnected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">📊</div>
+                                <div class="integration-name">Elasticsearch</div>
+                                <div class="integration-status integration-disconnected">Disconnected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">💬</div>
+                                <div class="integration-name">Slack</div>
+                                <div class="integration-status integration-connected">Connected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">☁️</div>
+                                <div class="integration-name">AWS Security Hub</div>
+                                <div class="integration-status integration-disconnected">Disconnected</div>
+                            </div>
+                            
+                            <div class="integration-item">
+                                <div class="integration-icon">➕</div>
+                                <div class="integration-name">Add New</div>
+                                <div class="integration-status"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Webhook Configuration</h3>
+                        
+                        <div class="form-group">
+                            <label for="webhookUrl">Webhook URL</label>
+                            <input type="text" id="webhookUrl" class="form-control" placeholder="https://example.com/webhook">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="webhookSecret">Webhook Secret</label>
+                            <input type="password" id="webhookSecret" class="form-control" placeholder="Your webhook secret">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="webhookEvents">Events to Send</label>
+                            <select id="webhookEvents" class="form-control" multiple>
+                                <option value="threat_detected" selected>Threat Detected</option>
+                                <option value="vulnerability_found" selected>Vulnerability Found</option>
+                                <option value="device_status">Device Status Change</option>
+                                <option value="user_login">User Login</option>
+                                <option value="report_generated">Report Generated</option>
+                            </select>
+                            <small style="color: rgba(255, 255, 255, 0.5); font-size: 12px;">Hold Ctrl/Cmd to select multiple</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+                
+                <!-- API Access Panel -->
+                <div class="settings-panel" id="api-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">API Access</h2>
+                        <p class="settings-description">Manage API tokens and access settings.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">API Tokens</h3>
+                        
+                        <div class="token-list">
+                            <div class="token-item">
+                                <div class="token-header">
+                                    <div class="token-name">Dashboard Integration</div>
+                                    <div class="token-actions">
+                                        <button class="token-action">🔄</button>
+                                        <button class="token-action">🗑️</button>
+                                    </div>
+                                </div>
+                                <div class="token-info">
+                                    <div class="token-field">
+                                        <div class="token-label">Created</div>
+                                        <div class="token-value">2023-01-15</div>
+                                    </div>
+                                    <div class="token-field">
+                                        <div class="token-label">Expires</div>
+                                        <div class="token-value">2024-01-15</div>
+                                    </div>
+                                    <div class="token-field">
+                                        <div class="token-label">Last Used</div>
+                                        <div class="token-value">2023-03-07</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="token-item">
+                                <div class="token-header">
+                                    <div class="token-name">Reporting API</div>
+                                    <div class="token-actions">
+                                        <button class="token-action">🔄</button>
+                                        <button class="token-action">🗑️</button>
+                                    </div>
+                                </div>
+                                <div class="token-info">
+                                    <div class="token-field">
+                                        <div class="token-label">Created</div>
+                                        <div class="token-value">2023-02-20</div>
+                                    </div>
+                                    <div class="token-field">
+                                        <div class="token-label">Expires</div>
+                                        <div class="token-value">2024-02-20</div>
+                                    </div>
+                                    <div class="token-field">
+                                        <div class="token-label">Last Used</div>
+                                        <div class="token-value">2023-03-06</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions" style="justify-content: flex-start; margin-top: 20px;">
+                            <button class="submit-btn">Generate New Token</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">API Settings</h3>
+                        
+                        <div class="form-group">
+                            <label for="apiRateLimit">API Rate Limit (requests per minute)</label>
+                            <input type="number" id="apiRateLimit" class="form-control" value="60">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="apiIpWhitelist">IP Whitelist (comma-separated)</label>
+                            <input type="text" id="apiIpWhitelist" class="form-control" placeholder="e.g., 192.168.1.1, 10.0.0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="apiAccessLog">API Access Logging</label>
+                            <select id="apiAccessLog" class="form-control">
+                                <option value="none">Disabled</option>
+                                <option value="errors">Errors Only</option>
+                                <option value="important">Important Operations</option>
+                                <option value="all" selected>All Requests</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+                
+                <!-- System Settings Panel (Admin Only) -->
+                <div class="settings-panel admin-only" id="system-panel">
+                    <div class="settings-panel-header">
+                        <h2 class="settings-panel-title">System Settings</h2>
+                        <p class="settings-description">Configure global system settings.</p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">System Configuration</h3>
+                        
+                        <div class="form-group">
+                            <label for="systemLogLevel">Log Level</label>
+                            <select id="systemLogLevel" class="form-control">
+                                <option value="error">Error</option>
+                                <option value="warning">Warning</option>
+                                <option value="info" selected>Info</option>
+                                <option value="debug">Debug</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="systemLogRetention">Log Retention (days)</label>
+                            <input type="number" id="systemLogRetention" class="form-control" value="90">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="systemDataBackup">Data Backup Schedule</label>
+                            <select id="systemDataBackup" class="form-control">
+                                <option value="none">No Automatic Backup</option>
+                                <option value="daily" selected>Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="systemMaintenanceWindow">Maintenance Window</label>
+                            <input type="text" id="systemMaintenanceWindow" class="form-control" value="Sundays, 01:00 - 03:00 AM EAT">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Database Settings</h3>
+                        
+                        <div class="form-group">
+                            <label for="dbConnectionString">MongoDB Connection String</label>
+                            <input type="password" id="dbConnectionString" class="form-control" value="mongodb+srv://********:********@cluster0.pmbmm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="dbName">Database Name</label>
+                                    <input type="text" id="dbName" class="form-control" value="KenyaSMECybersec">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="dbPoolSize">Connection Pool Size</label>
+                                    <input type="number" id="dbPoolSize" class="form-control" value="10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="cancel-btn">Reset</button>
+                        <button class="submit-btn">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication and role
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userRole = localStorage.getItem('userRole') || 'user';
+            
+            if (!isAuthenticated) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Only admin and manager should access this page
+            if (userRole !== 'admin' && userRole !== 'manager') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Set user info in header
+            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            document.getElementById('userRole').textContent = `(${userRole})`;
+            
+            // Show/hide role-specific elements
+            // Show/hide role-specific elements
+const adminElements = document.querySelectorAll('.admin-only');
+const managerElements = document.querySelectorAll('.manager-only');
+const analystElements = document.querySelectorAll('.analyst-only');
+const userElements = document.querySelectorAll('.user-only');
+const nonAdminElements = document.querySelectorAll('.non-admin-only');
+const nonManagerElements = document.querySelectorAll('.non-manager-only');
+
+if (userRole === 'admin') {
+    adminElements.forEach(el => el.style.display = 'block');
+    managerElements.forEach(el => el.style.display = 'block');
+    analystElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'manager') {
+    managerElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'analyst') {
+    analystElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'user') {
+    userElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+}
+            
+            // Logout handler
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            });
+            
+            // Settings panel navigation
+            const menuItems = document.querySelectorAll('.settings-menu-item');
+            const panels = document.querySelectorAll('.settings-panel');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const panelId = this.getAttribute('data-panel');
+                    
+                    // Hide all panels
+                    panels.forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                    
+                    // Remove active class from all menu items
+                    menuItems.forEach(menuItem => {
+                        menuItem.classList.remove('active');
+                    });
+                    
+                    // Show selected panel and mark menu item as active
+                    document.getElementById(`${panelId}-panel`).classList.add('active');
+                    this.classList.add('active');
+                });
+            });
+            
+            // Form submission handlers
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Process form data (in a real app)
+                    alert('Settings saved successfully!');
+                });
+            });
+            
+            // Reset buttons
+            const resetButtons = document.querySelectorAll('.cancel-btn');
+            resetButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (e.target.innerText.toLowerCase() === 'reset') {
+                        if (confirm('Reset all settings to default values?')) {
+                            // Reset form (in a real app)
+                            this.closest('form').reset();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya SME Cybersecurity - Reports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            margin-right: 15px;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .add-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .add-btn i {
+            margin-right: 8px;
+        }
+        
+        .add-btn:hover {
+            background-color: #1ae077;
+            transform: translateY(-2px);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .reports-table th, .reports-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .reports-table th {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .reports-table tbody tr {
+            transition: all 0.3s;
+        }
+        
+        .reports-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .report-type-badge, .report-status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .report-type-daily {
+            background-color: rgba(32, 201, 151, 0.2);
+            color: #20c997;
+        }
+        
+        .report-type-weekly {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+        
+        .report-type-monthly {
+            background-color: rgba(156, 39, 176, 0.2);
+            color: #9c27b0;
+        }
+        
+        .report-type-quarterly {
+            background-color: rgba(233, 30, 99, 0.2);
+            color: #e91e63;
+        }
+        
+        .report-type-incident {
+            background-color: rgba(255, 91, 92, 0.2);
+            color: #ff5b5c;
+        }
+        
+        .report-type-compliance {
+            background-color: rgba(255, 159, 67, 0.2);
+            color: #ff9f43;
+        }
+        
+        .report-status-draft {
+            background-color: rgba(180, 180, 180, 0.2);
+            color: #d0d0d0;
+        }
+        
+        .report-status-generated {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+        
+        .report-status-sent {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .report-status-viewed {
+            background-color: rgba(156, 39, 176, 0.2);
+            color: #9c27b0;
+        }
+        
+        .action-btn {
+            background-color: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .action-btn:hover {
+            color: #22FF85;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover, .pagination a.active {
+            background-color: #22FF85;
+            color: #0f1736;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            margin: 5% auto;
+            padding: 20px;
+            width: 70%;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #22FF85;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cancel-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .submit-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1ae077;
+        }
+        
+        /* Report view modal */
+        .report-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .report-section {
+            margin-bottom: 30px;
+        }
+        
+        .report-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .report-chart {
+            background-color: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            height: 200px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .report-table th, .report-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .report-table th {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+        
+        .report-recommendations {
+            background-color: rgba(34, 255, 133, 0.05);
+            border-left: 3px solid #22FF85;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .report-recommendation-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .report-recommendation-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #22FF85;
+        }
+        
+        .report-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .email-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .email-chip {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        
+        .email-chip span {
+            margin-right: 5px;
+        }
+        
+        .email-remove {
+            cursor: pointer;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .email-remove:hover {
+            color: #ff5b5c;
+        }
+        
+        .email-input {
+            flex: 1;
+            min-width: 150px;
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px 0;
+        }
+        
+        .email-input:focus {
+            outline: none;
+        }
+        
+        /* Role-specific element styles */
+        .admin-only, .manager-only, .analyst-only, .user-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100">
+                <rect width="100" height="100" rx="20" fill="#22FF85" />
+                <path d="M50 20C33.4315 20 20 33.4315 20 50C20 66.5685 33.4315 80 50 80C66.5685 80 80 66.5685 80 50C80 33.4315 66.5685 20 50 20ZM50 25C63.8071 25 75 36.1929 75 50C75 63.8071 63.8071 75 50 75C36.1929 75 25 63.8071 25 50C25 36.1929 36.1929 25 50 25Z" fill="white" />
+                <path d="M45 60L35 50L40 45L45 50L60 35L65 40L45 60Z" fill="white" />
+            </svg>
+            <h1>kenyasmeutdrs</h1>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item admin-only">
+                <a href="organizations.html" class="nav-link">
+                    <i>🏢</i> Organizations
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only">
+                <a href="users.html" class="nav-link">
+                    <i>👥</i> Users
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="devices.html" class="nav-link">
+                    <i>💻</i> Devices
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="threats.html" class="nav-link">
+                    <i>⚠️</i> Threats
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="vulnerabilities.html" class="nav-link">
+                    <i>🛡️</i> Vulnerabilities
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only admin-only">
+                <a href="ai-models.html" class="nav-link">
+                    <i>🤖</i> AI Models
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="reports.html" class="nav-link">
+                    <i>📝</i> Reports
+                </a>
+            </li>
+            <li class="nav-item admin-only manager-only">
+                <a href="settings.html" class="nav-link">
+                    <i>⚙️</i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Reports</h1>
+            <div class="user-info">
+                <span class="user-name" id="userName">User</span>
+                <span class="user-role" id="userRole">(Role)</span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content-header">
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Report Type</label>
+                    <select class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="incident">Incident</option>
+                        <option value="compliance">Compliance</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-select">
+                        <option value="all">All Statuses</option>
+                        <option value="draft">Draft</option>
+                        <option value="generated">Generated</option>
+                        <option value="sent">Sent</option>
+                        <option value="viewed">Viewed</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Date Range</label>
+                    <select class="filter-select">
+                        <option value="all">All Time</option>
+                        <option value="7days">Last 7 Days</option>
+                        <option value="30days">Last 30 Days</option>
+                        <option value="90days">Last 90 Days</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="add-btn" id="createReportBtn">
+                <i>➕</i> Create Report
+            </button>
+        </div>
+        
+        <table class="reports-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Period</th>
+                    <th>Status</th>
+                    <th>Generated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Monthly Security Overview - March 2023</td>
+                    <td><span class="report-type-badge report-type-monthly">Monthly</span></td>
+                    <td>Mar 1, 2023 - Mar 31, 2023</td>
+                    <td><span class="report-status-badge report-status-sent">Sent</span></td>
+                    <td>Mar 31, 2023</td>
+                    <td>
+                        <button class="action-btn view-report" data-id="1">👁️</button>
+                        <button class="action-btn">📤</button>
+                        <button class="action-btn">📥</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Weekly Security Report - Mar 20-26, 2023</td>
+                    <td><span class="report-type-badge report-type-weekly">Weekly</span></td>
+                    <td>Mar 20, 2023 - Mar 26, 2023</td>
+                    <td><span class="report-status-badge report-status-viewed">Viewed</span></td>
+                    <td>Mar 27, 2023</td>
+                    <td>
+                        <button class="action-btn view-report" data-id="2">👁️</button>
+                        <button class="action-btn">📤</button>
+                        <button class="action-btn">📥</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ransomware Incident Report - Mar 15, 2023</td>
+                    <td><span class="report-type-badge report-type-incident">Incident</span></td>
+                    <td>Mar 15, 2023</td>
+                    <td><span class="report-status-badge report-status-sent">Sent</span></td>
+                    <td>Mar 16, 2023</td>
+                    <td>
+                        <button class="action-btn view-report" data-id="3">👁️</button>
+                        <button class="action-btn">📤</button>
+                        <button class="action-btn">📥</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Daily Security Summary - Mar 7, 2023</td>
+                    <td><span class="report-type-badge report-type-daily">Daily</span></td>
+                    <td>Mar 7, 2023</td>
+                    <td><span class="report-status-badge report-status-generated">Generated</span></td>
+                    <td>Mar 7, 2023</td>
+                    <td>
+                        <button class="action-btn view-report" data-id="4">👁️</button>
+                        <button class="action-btn">📤</button>
+                        <button class="action-btn">📥</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Q1 2023 Compliance Assessment</td>
+                    <td><span class="report-type-badge report-type-compliance">Compliance</span></td>
+                    <td>Jan 1, 2023 - Mar 31, 2023</td>
+                    <td><span class="report-status-badge report-status-draft">Draft</span></td>
+                    <td>-</td>
+                    <td>
+                        <button class="action-btn view-report" data-id="5">👁️</button>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>February 2023 Security Report</td>
+                    <td><span class="report-type-badge report-type-monthly">Monthly</span></td>
+                    <td>Feb 1, 2023 - Feb 28, 2023</td>
+                    <td><span class="report-status-badge report-status-viewed">Viewed</span></td>
+                    <td>Feb 28, 2023</td>
+                    <td>
+                        <button class="action-btn view-report" data-id="6">👁️</button>
+                        <button class="action-btn">📤</button>
+                        <button class="action-btn">📥</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <ul class="pagination">
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">»</a></li>
+        </ul>
+    </div>
+    
+    <!-- Create Report Modal -->
+    <div id="createReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Report</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            
+            <form id="reportForm">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="reportTitle">Report Title</label>
+                            <input type="text" id="reportTitle" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="reportType">Report Type</label>
+                            <select id="reportType" class="form-control" required>
+                                <option value="">Select Report Type</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="incident">Incident</option>
+                                <option value="compliance">Compliance</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reportDescription">Description</label>
+                    <textarea id="reportDescription" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Recipients</label>
+                    <div class="email-list">
+                        <div class="email-chip">
+                            <span>admin@example.com</span>
+                            <span class="email-remove">✕</span>
+                        </div>
+                        <div class="email-chip">
+                            <span>manager@example.com</span>
+                            <span class="email-remove">✕</span>
+                        </div>
+                        <input type="email" class="email-input" placeholder="Add recipient email...">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="includeThreatsSummary">Include Threats Summary</label>
+                            <select id="includeThreatsSummary" class="form-control">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="includeVulnSummary">Include Vulnerabilities Summary</label>
+                            <select id="includeVulnSummary" class="form-control">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="includeComplianceStatus">Include Compliance Status</label>
+                            <select id="includeComplianceStatus" class="form-control">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="includeRecommendations">Include Recommendations</label>
+                            <select id="includeRecommendations" class="form-control">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelReportBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Generate Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- View Report Modal -->
+    <div id="viewReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Monthly Security Overview - March 2023</h2>
+                <button class="close-btn close-view-btn">&times;</button>
+            </div>
+            
+            <div class="report-content">
+                <div class="report-section">
+                    <h3 class="report-section-title">Executive Summary</h3>
+                    <p>This report provides a comprehensive overview of the cybersecurity posture for Sample Kenyan SME during March 2023. During this period, we detected 24 security threats, addressed 12 vulnerabilities, and maintained an overall security score of 82%. Key highlights include a ransomware incident on March 15, which was successfully contained and mitigated without data loss.</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3 class="report-section-title">Threats Summary</h3>
+                    <div class="report-chart">Threats by Severity Chart</div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Threat Type</th>
+                                <th>Count</th>
+                                <th>Status</th>
+                                <th>Avg. Resolution Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Malware</td>
+                                <td>8</td>
+                                <td>All Resolved</td>
+                                <td>4.2 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Ransomware</td>
+                                <td>1</td>
+                                <td>Resolved</td>
+                                <td>6.5 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Phishing</td>
+                                <td>12</td>
+                                <td>10 Resolved, 2 In Progress</td>
+                                <td>3.8 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Network Intrusion</td>
+                                <td>3</td>
+                                <td>All Resolved</td>
+                                <td>5.1 hours</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="report-section">
+                    <h3 class="report-section-title">Vulnerabilities Summary</h3>
+                    <div class="report-chart">Vulnerabilities by Status Chart</div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Count</th>
+                                <th>Patched</th>
+                                <th>Avg. Fix Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Critical</td>
+                                <td>2</td>
+                                <td>100%</td>
+                                <td>1.5 days</td>
+                            </tr>
+                            <tr>
+                                <td>High</td>
+                                <td>5</td>
+                                <td>80%</td>
+                                <td>3.2 days</td>
+                            </tr>
+                            <tr>
+                                <td>Medium</td>
+                                <td>8</td>
+                                <td>75%</td>
+                                <td>5.6 days</td>
+                            </tr>
+                            <tr>
+                                <td>Low</td>
+                                <td>4</td>
+                                <td>50%</td>
+                                <td>7.3 days</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="report-section">
+                    <h3 class="report-section-title">Key Recommendations</h3>
+                    <div class="report-recommendations">
+                        <div class="report-recommendation-item">Implement multi-factor authentication across all critical systems to prevent unauthorized access.</div>
+                        <div class="report-recommendation-item">Upgrade Windows workstations to ensure all systems are on the latest security patches.</div>
+                        <div class="report-recommendation-item">Conduct phishing awareness training for all employees, given the high number of phishing attempts.</div>
+                        <div class="report-recommendation-item">Review and strengthen firewall rules to prevent future network intrusion attempts.</div>
+                        <div class="report-recommendation-item">Implement automated backup solutions for all critical data to improve ransomware resilience.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="report-actions">
+                <button class="cancel-btn">Close</button>
+                <button class="submit-btn">Download PDF</button>
+                <button class="submit-btn">Send Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userRole = localStorage.getItem('userRole') || 'user';
+            
+            if (!isAuthenticated) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Set user info in header
+            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            document.getElementById('userRole').textContent = `(${userRole})`;
+            
+            // Show/hide role-specific elements
+            // Show/hide role-specific elements
+const adminElements = document.querySelectorAll('.admin-only');
+const managerElements = document.querySelectorAll('.manager-only');
+const analystElements = document.querySelectorAll('.analyst-only');
+const userElements = document.querySelectorAll('.user-only');
+const nonAdminElements = document.querySelectorAll('.non-admin-only');
+const nonManagerElements = document.querySelectorAll('.non-manager-only');
+
+if (userRole === 'admin') {
+    adminElements.forEach(el => el.style.display = 'block');
+    managerElements.forEach(el => el.style.display = 'block');
+    analystElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'manager') {
+    managerElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'analyst') {
+    analystElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'user') {
+    userElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+}
+            
+            // Logout handler
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            });
+            
+            // Create Report Modal handlers
+            const createReportModal = document.getElementById('createReportModal');
+            const createReportBtn = document.getElementById('createReportBtn');
+            const closeCreateBtn = createReportModal.querySelector('.close-btn');
+            const cancelReportBtn = document.getElementById('cancelReportBtn');
+            
+            createReportBtn.addEventListener('click', function() {
+                createReportModal.style.display = 'block';
+            });
+            
+            closeCreateBtn.addEventListener('click', function() {
+                createReportModal.style.display = 'none';
+            });
+            
+            cancelReportBtn.addEventListener('click', function() {
+                createReportModal.style.display = 'none';
+            });
+            
+            // View Report Modal handlers
+            const viewReportModal = document.getElementById('viewReportModal');
+            const viewReportBtns = document.querySelectorAll('.view-report');
+            const closeViewBtn = viewReportModal.querySelector('.close-view-btn');
+            const closeReportBtn = viewReportModal.querySelector('.cancel-btn');
+            
+            viewReportBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const reportId = this.getAttribute('data-id');
+                    viewReportModal.style.display = 'block';
+                });
+            });
+            
+            closeViewBtn.addEventListener('click', function() {
+                viewReportModal.style.display = 'none';
+            });
+            
+            closeReportBtn.addEventListener('click', function() {
+                viewReportModal.style.display = 'none';
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === createReportModal) {
+                    createReportModal.style.display = 'none';
+                }
+                if (event.target === viewReportModal) {
+                    viewReportModal.style.display = 'none';
+                }
+            });
+            
+            // Email chips functionality
+            const emailInput = document.querySelector('.email-input');
+            const emailList = document.querySelector('.email-list');
+            const emailRemoveButtons = document.querySelectorAll('.email-remove');
+            
+            emailInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    e.preventDefault();
+                    const email = this.value.trim();
+                    // Simple email validation
+                    if (email.includes('@')) {
+                        const chip = document.createElement('div');
+                        chip.className = 'email-chip';
+                        chip.innerHTML = `
+                            <span>${email}</span>
+                            <span class="email-remove">✕</span>
+                        `;
+                        
+                        emailList.insertBefore(chip, this);
+                        this.value = '';
+                        
+                        // Add remove handler to the new chip
+                        chip.querySelector('.email-remove').addEventListener('click', function() {
+                            chip.remove();
+                        });
+                    }
+                }
+            });
+            
+            emailRemoveButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.email-chip').remove();
+                });
+            });
+            
+            // Form submission
+            document.getElementById('reportForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Process form data (in a real app)
+                createReportModal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

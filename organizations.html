@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya SME Cybersecurity - Organizations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            margin-right: 15px;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .add-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .add-btn i {
+            margin-right: 8px;
+        }
+        
+        .add-btn:hover {
+            background-color: #1ae077;
+            transform: translateY(-2px);
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .organizations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .organizations-table th, .organizations-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .organizations-table th {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .organizations-table tbody tr {
+            transition: all 0.3s;
+        }
+        
+        .organizations-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .status-expired {
+            background-color: rgba(255, 91, 92, 0.2);
+            color: #ff5b5c;
+        }
+        
+        .status-pending {
+            background-color: rgba(255, 159, 67, 0.2);
+            color: #ff9f43;
+        }
+        
+        .action-btn {
+            background-color: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            color: #22FF85;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover, .pagination a.active {
+            background-color: #22FF85;
+            color: #0f1736;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            margin: 10% auto;
+            padding: 20px;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #22FF85;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cancel-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .submit-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1ae077;
+        }
+        
+        /* Role-specific element styles */
+        .admin-only, .manager-only, .analyst-only, .user-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100">
+                <rect width="100" height="100" rx="20" fill="#22FF85" />
+                <path d="M50 20C33.4315 20 20 33.4315 20 50C20 66.5685 33.4315 80 50 80C66.5685 80 80 66.5685 80 50C80 33.4315 66.5685 20 50 20ZM50 25C63.8071 25 75 36.1929 75 50C75 63.8071 63.8071 75 50 75C36.1929 75 25 63.8071 25 50C25 36.1929 36.1929 25 50 25Z" fill="white" />
+                <path d="M45 60L35 50L40 45L45 50L60 35L65 40L45 60Z" fill="white" />
+            </svg>
+            <h1>kenyasmeutdrs</h1>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item admin-only">
+                <a href="organizations.html" class="nav-link">
+                    <i>🏢</i> Organizations
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only">
+                <a href="users.html" class="nav-link">
+                    <i>👥</i> Users
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="devices.html" class="nav-link">
+                    <i>💻</i> Devices
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="threats.html" class="nav-link">
+                    <i>⚠️</i> Threats
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="vulnerabilities.html" class="nav-link">
+                    <i>🛡️</i> Vulnerabilities
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only admin-only">
+                <a href="ai-models.html" class="nav-link">
+                    <i>🤖</i> AI Models
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="reports.html" class="nav-link">
+                    <i>📝</i> Reports
+                </a>
+            </li>
+            <li class="nav-item admin-only manager-only">
+                <a href="settings.html" class="nav-link">
+                    <i>⚙️</i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Organizations</h1>
+            <div class="user-info">
+                <span class="user-name" id="userName">User</span>
+                <span class="user-role" id="userRole">(Role)</span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content-header">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search organizations...">
+            </div>
+            
+            <button class="add-btn" id="addOrgBtn">
+                <i>➕</i> Add Organization
+            </button>
+        </div>
+        
+        <table class="organizations-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Industry</th>
+                    <th>Size</th>
+                    <th>Location</th>
+                    <th>Contact</th>
+                    <th>Subscription</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sample Kenyan SME</td>
+                    <td>Technology</td>
+                    <td>Small</td>
+                    <td>Nairobi</td>
+                    <td>john.doe@example.com</td>
+                    <td><span class="status-badge status-active">Standard</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mombasa Trading Co.</td>
+                    <td>Retail</td>
+                    <td>Medium</td>
+                    <td>Mombasa</td>
+                    <td>info@mombasa-trading.com</td>
+                    <td><span class="status-badge status-active">Premium</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kilimo Solutions</td>
+                    <td>Agriculture</td>
+                    <td>Small</td>
+                    <td>Kisumu</td>
+                    <td>support@kilimo.co.ke</td>
+                    <td><span class="status-badge status-active">Basic</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nakuru Manufacturers</td>
+                    <td>Manufacturing</td>
+                    <td>Medium</td>
+                    <td>Nakuru</td>
+                    <td>contact@nakuru-mfg.com</td>
+                    <td><span class="status-badge status-expired">Expired</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Eldoret Logistics</td>
+                    <td>Transportation</td>
+                    <td>Small</td>
+                    <td>Eldoret</td>
+                    <td>info@eldoret-logistics.co.ke</td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <ul class="pagination">
+            <li><a href="#">«</a></li>
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">»</a></li>
+        </ul>
+    </div>
+    
+    <!-- Add/Edit Organization Modal -->
+    <div id="organizationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Organization</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            
+            <form id="organizationForm">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="orgName">Organization Name</label>
+                            <input type="text" id="orgName" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="industry">Industry</label>
+                            <select id="industry" class="form-control" required>
+                                <option value="">Select Industry</option>
+                                <option value="technology">Technology</option>
+                                <option value="retail">Retail</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="transportation">Transportation</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="education">Education</option>
+                                <option value="finance">Finance</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="size">Company Size</label>
+                            <select id="size" class="form-control" required>
+                                <option value="">Select Size</option>
+                                <option value="micro">Micro (1-9 employees)</option>
+                                <option value="small">Small (10-49 employees)</option>
+                                <option value="medium">Medium (50-249 employees)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="contactPerson">Contact Person</label>
+                            <input type="text" id="contactPerson" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="contactEmail">Contact Email</label>
+                            <input type="email" id="contactEmail" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="contactPhone">Contact Phone</label>
+                            <input type="tel" id="contactPhone" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="deploymentType">Deployment Type</label>
+                            <select id="deploymentType" class="form-control" required>
+                                <option value="">Select Deployment Type</option>
+                                <option value="cloud">Cloud</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="on-premise">On-Premise</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="subscriptionPlan">Subscription Plan</label>
+                            <select id="subscriptionPlan" class="form-control" required>
+                                <option value="">Select Plan</option>
+                                <option value="basic">Basic</option>
+                                <option value="standard">Standard</option>
+                                <option value="premium">Premium</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="subscriptionStartDate">Start Date</label>
+                            <input type="date" id="subscriptionStartDate" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save Organization</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication and role
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userRole = localStorage.getItem('userRole') || 'user';
+            
+            if (!isAuthenticated) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Only admin should access this page
+            if (userRole !== 'admin') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Set user info in header
+            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            document.getElementById('userRole').textContent = `(${userRole})`;
+            
+            // Show/hide role-specific elements
+            // Show/hide role-specific elements
+const adminElements = document.querySelectorAll('.admin-only');
+const managerElements = document.querySelectorAll('.manager-only');
+const analystElements = document.querySelectorAll('.analyst-only');
+const userElements = document.querySelectorAll('.user-only');
+const nonAdminElements = document.querySelectorAll('.non-admin-only');
+const nonManagerElements = document.querySelectorAll('.non-manager-only');
+
+if (userRole === 'admin') {
+    adminElements.forEach(el => el.style.display = 'block');
+    managerElements.forEach(el => el.style.display = 'block');
+    analystElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'manager') {
+    managerElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'analyst') {
+    analystElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'user') {
+    userElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+}
+            
+            // Logout handler
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            });
+            
+            // Modal handlers
+            const modal = document.getElementById('organizationModal');
+            const addOrgBtn = document.getElementById('addOrgBtn');
+            const closeBtn = document.querySelector('.close-btn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            
+            addOrgBtn.addEventListener('click', function() {
+                modal.style.display = 'block';
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Form handler
+            document.getElementById('organizationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Process form data here
+                // For demo, just close the modal
+                modal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2246 @@
+{
+    "info": {
+      "_postman_id": "6f3e5d17-9f6a-4d8a-b8f0-5bfc8c9e3d70",
+      "name": "Kenya SME Cybersecurity API",
+      "description": "API for testing the Kenya SME Cybersecurity System",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Authentication",
+        "item": [
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-www-form-urlencoded"
+                }
+              ],
+              "body": {
+                "mode": "urlencoded",
+                "urlencoded": [
+                  {
+                    "key": "username",
+                    "value": "{{email}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "password",
+                    "value": "{{password}}",
+                    "type": "text"
+                  }
+                ]
+              },
+              "url": {
+                "raw": "{{baseUrl}}/token",
+                "host": ["{{baseUrl}}"],
+                "path": ["token"]
+              },
+              "description": "Get access token for authentication"
+            },
+            "response": []
+          },
+          {
+            "name": "Health Check",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/health",
+                "host": ["{{baseUrl}}"],
+                "path": ["health"]
+              },
+              "description": "Check API health status"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Organizations",
+        "item": [
+          {
+            "name": "Get All Organizations",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/organizations",
+                "host": ["{{baseUrl}}"],
+                "path": ["organizations"]
+              },
+              "description": "Get a list of all organizations (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Organization",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/organizations/{{orgId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["organizations", "{{orgId}}"]
+              },
+              "description": "Get a single organization by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Organization",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Test Organization\",\n    \"industry\": \"Technology\",\n    \"size\": \"small\",\n    \"contactEmail\": \"contact@example.com\",\n    \"subscription\": {\n        \"plan\": \"standard\",\n        \"startDate\": \"{{$isoTimestamp}}\",\n        \"paymentStatus\": \"active\"\n    },\n    \"deploymentType\": \"cloud\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/organizations",
+                "host": ["{{baseUrl}}"],
+                "path": ["organizations"]
+              },
+              "description": "Create a new organization (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Organization",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Updated Organization Name\",\n    \"contactEmail\": \"updated@example.com\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/organizations/{{orgId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["organizations", "{{orgId}}"]
+              },
+              "description": "Update an organization by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Organization",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/organizations/{{orgId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["organizations", "{{orgId}}"]
+              },
+              "description": "Delete an organization by ID (admin only)"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Get All Users",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users?org_id={{orgId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  }
+                ]
+              },
+              "description": "Get a list of users"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Current User",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users/me",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "me"]
+              },
+              "description": "Get current user information"
+            },
+            "response": []
+          },
+          {
+            "name": "Get User",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users/{{userId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "{{userId}}"]
+              },
+              "description": "Get a single user by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"SecurePassword123\",\n    \"role\": \"analyst\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/users",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"]
+              },
+              "description": "Create a new user"
+            },
+            "response": []
+          },
+          {
+            "name": "Update User",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\",\n    \"active\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/users/{{userId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "{{userId}}"]
+              },
+              "description": "Update a user by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete User",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users/{{userId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "{{userId}}"]
+              },
+              "description": "Delete a user by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Change Password",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"current_password\": \"{{password}}\",\n    \"new_password\": \"NewPassword456\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/users/change-password",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "change-password"]
+              },
+              "description": "Change user password"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Devices",
+        "item": [
+          {
+            "name": "Get All Devices",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/devices?org_id={{orgId}}&device_type=server&security_status=vulnerable",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "device_type",
+                    "value": "server",
+                    "description": "Filter by device type"
+                  },
+                  {
+                    "key": "security_status",
+                    "value": "vulnerable",
+                    "description": "Filter by security status"
+                  }
+                ]
+              },
+              "description": "Get a list of devices with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Device",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/devices/{{deviceId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices", "{{deviceId}}"]
+              },
+              "description": "Get a single device by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Device",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"hostname\": \"test-server-01\",\n    \"ipAddress\": \"192.168.1.10\",\n    \"macAddress\": \"00:11:22:33:44:55\",\n    \"deviceType\": \"server\",\n    \"operatingSystem\": \"Ubuntu\",\n    \"osVersion\": \"22.04 LTS\",\n    \"isMonitored\": true,\n    \"installedSoftware\": [\"nginx\", \"postgresql\", \"python3\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/devices",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices"]
+              },
+              "description": "Create a new device"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Device",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"hostname\": \"updated-server-01\",\n    \"operatingSystem\": \"Ubuntu\",\n    \"osVersion\": \"22.10\",\n    \"isMonitored\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/devices/{{deviceId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices", "{{deviceId}}"]
+              },
+              "description": "Update a device by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Device",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/devices/{{deviceId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices", "{{deviceId}}"]
+              },
+              "description": "Delete a device by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Device Security Status",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/devices/{{deviceId}}/security-status?status=vulnerable",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices", "{{deviceId}}", "security-status"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "vulnerable",
+                    "description": "Security status: secure, vulnerable, compromised, or unknown"
+                  }
+                ]
+              },
+              "description": "Update device security status"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Device Threats",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/devices/{{deviceId}}/threats",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices", "{{deviceId}}", "threats"]
+              },
+              "description": "Get all threats for a device"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Device Vulnerabilities",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/devices/{{deviceId}}/vulnerabilities",
+                "host": ["{{baseUrl}}"],
+                "path": ["devices", "{{deviceId}}", "vulnerabilities"]
+              },
+              "description": "Get all vulnerabilities for a device"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Threats",
+        "item": [
+          {
+            "name": "Get All Threats",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/threats?org_id={{orgId}}&device_id={{deviceId}}&severity=high&status=detected&threat_type=malware",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "device_id",
+                    "value": "{{deviceId}}"
+                  },
+                  {
+                    "key": "severity",
+                    "value": "high"
+                  },
+                  {
+                    "key": "status",
+                    "value": "detected"
+                  },
+                  {
+                    "key": "threat_type",
+                    "value": "malware"
+                  }
+                ]
+              },
+              "description": "Get a list of threats with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Threat",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/threats/{{threatId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats", "{{threatId}}"]
+              },
+              "description": "Get a single threat by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Threat",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"deviceId\": \"{{deviceId}}\",\n    \"detectionMethod\": \"signature\",\n    \"threatType\": \"malware\",\n    \"severity\": \"high\",\n    \"confidence\": 0.85,\n    \"signature\": \"malware-sig-001\",\n    \"description\": \"Suspicious file detected\",\n    \"sourceIp\": \"203.0.113.100\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/threats",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats"]
+              },
+              "description": "Create a new threat"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Threat",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"status\": \"mitigating\",\n    \"mitigationSteps\": [\"Isolated device\", \"Running malware scan\"],\n    \"severity\": \"medium\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/threats/{{threatId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats", "{{threatId}}"]
+              },
+              "description": "Update a threat by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Threat",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/threats/{{threatId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats", "{{threatId}}"]
+              },
+              "description": "Delete a threat by ID (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Response Action",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"parameters\": {\n        \"ip\": \"203.0.113.100\",\n        \"duration\": \"24h\"\n    }\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/threats/{{threatId}}/actions?action_type=block_ip",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats", "{{threatId}}", "actions"],
+                "query": [
+                  {
+                    "key": "action_type",
+                    "value": "block_ip",
+                    "description": "Action type (e.g., block_ip, isolate_device)"
+                  }
+                ]
+              },
+              "description": "Create a response action for a threat"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Threat Actions",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/threats/{{threatId}}/actions",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats", "{{threatId}}", "actions"]
+              },
+              "description": "Get all response actions for a threat"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Threats Summary",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/threats/summary/by-organization?org_id={{orgId}}&days=30",
+                "host": ["{{baseUrl}}"],
+                "path": ["threats", "summary", "by-organization"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "days",
+                    "value": "30"
+                  }
+                ]
+              },
+              "description": "Get a summary of threats by organization"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Vulnerabilities",
+        "item": [
+          {
+            "name": "Get All Vulnerabilities",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/vulnerabilities?org_id={{orgId}}&device_id={{deviceId}}&severity=critical&status=open",
+                "host": ["{{baseUrl}}"],
+                "path": ["vulnerabilities"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "device_id",
+                    "value": "{{deviceId}}"
+                  },
+                  {
+                    "key": "severity",
+                    "value": "critical"
+                  },
+                  {
+                    "key": "status",
+                    "value": "open"
+                  }
+                ]
+              },
+              "description": "Get a list of vulnerabilities with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Vulnerability",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/vulnerabilities/{{vulnerabilityId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["vulnerabilities", "{{vulnerabilityId}}"]
+              },
+              "description": "Get a single vulnerability by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Vulnerability",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"deviceId\": \"{{deviceId}}\",\n    \"cveId\": \"CVE-2023-12345\",\n    \"title\": \"Remote Code Execution in Web Server\",\n    \"description\": \"A vulnerability that allows remote attackers to execute arbitrary code\",\n    \"severity\": \"critical\",\n    \"cvssScore\": 9.8,\n    \"affectedSoftware\": \"Nginx\",\n    \"affectedVersion\": \"1.18.0\",\n    \"remediationSteps\": \"Update to the latest version\",\n    \"patchAvailable\": true,\n    \"patchLink\": \"https://example.com/security-patch\",\n    \"exploitAvailable\": true,\n    \"status\": \"open\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/vulnerabilities",
+                "host": ["{{baseUrl}}"],
+                "path": ["vulnerabilities"]
+              },
+              "description": "Create a new vulnerability"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Vulnerability",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"status\": \"in_progress\",\n    \"remediationSteps\": \"1. Update to the latest version\\n2. Configure additional security measures\",\n    \"patchAvailable\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/vulnerabilities/{{vulnerabilityId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["vulnerabilities", "{{vulnerabilityId}}"]
+              },
+              "description": "Update a vulnerability by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Vulnerability",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/vulnerabilities/{{vulnerabilityId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["vulnerabilities", "{{vulnerabilityId}}"]
+              },
+              "description": "Delete a vulnerability by ID (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Vulnerability Statistics",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/vulnerabilities/summary/statistics?org_id={{orgId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["vulnerabilities", "summary", "statistics"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  }
+                ]
+              },
+              "description": "Get vulnerability statistics for an organization"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Logs",
+        "item": [
+          {
+            "name": "Get All Logs",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/logs?org_id={{orgId}}&device_id={{deviceId}}&level=error&is_anomalous=true",
+                "host": ["{{baseUrl}}"],
+                "path": ["logs"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "device_id",
+                    "value": "{{deviceId}}"
+                  },
+                  {
+                    "key": "level",
+                    "value": "error"
+                  },
+                  {
+                    "key": "is_anomalous",
+                    "value": "true"
+                  }
+                ]
+              },
+              "description": "Get a list of logs with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Log",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/logs/{{logId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["logs", "{{logId}}"]
+              },
+              "description": "Get a single log by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Log",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"deviceId\": \"{{deviceId}}\",\n    \"source\": \"firewall\",\n    \"eventType\": \"connection_blocked\",\n    \"level\": \"warning\",\n    \"message\": \"Connection blocked from suspicious IP address\",\n    \"metadata\": {\n        \"sourceIp\": \"203.0.113.100\",\n        \"destinationPort\": 22,\n        \"protocol\": \"tcp\"\n    },\n    \"ipAddress\": \"203.0.113.100\",\n    \"isAnomalous\": true,\n    \"anomalyScore\": 0.75\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/logs",
+                "host": ["{{baseUrl}}"],
+                "path": ["logs"]
+              },
+              "description": "Create a new log entry"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Log",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/logs/{{logId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["logs", "{{logId}}"]
+              },
+              "description": "Delete a log by ID (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Logs Summary",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/logs/summary/by-level?org_id={{orgId}}&days=7",
+                "host": ["{{baseUrl}}"],
+                "path": ["logs", "summary", "by-level"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "days",
+                    "value": "7"
+                  }
+                ]
+              },
+              "description": "Get a summary of logs by level for a specific time period"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Network Traffic",
+        "item": [
+          {
+            "name": "Get All Network Traffic",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/network-traffic?org_id={{orgId}}&device_id={{deviceId}}&time_window=1hour",
+                "host": ["{{baseUrl}}"],
+                "path": ["network-traffic"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "device_id",
+                    "value": "{{deviceId}}"
+                  },
+                  {
+                    "key": "time_window",
+                    "value": "1hour"
+                  }
+                ]
+              },
+              "description": "Get a list of network traffic records with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Network Traffic",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/network-traffic/{{trafficId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["network-traffic", "{{trafficId}}"]
+              },
+              "description": "Get a single network traffic record by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Network Traffic",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"deviceId\": \"{{deviceId}}\",\n    \"timeWindow\": \"1hour\",\n    \"startTime\": \"{{$isoTimestamp}}\",\n    \"endTime\": \"{{$isoTimestamp}}\",\n    \"totalPackets\": 15000,\n    \"totalBytes\": 25000000,\n    \"inboundBytes\": 15000000,\n    \"outboundBytes\": 10000000,\n    \"protocolSummary\": {\n        \"tcp\": 10000,\n        \"udp\": 4000,\n        \"icmp\": 1000\n    },\n    \"portSummary\": {\n        \"80\": 5000,\n        \"443\": 5000,\n        \"53\": 3000,\n        \"other\": 2000\n    },\n    \"topSourceIps\": [\n        {\"ip\": \"203.0.113.100\", \"bytes\": 5000000},\n        {\"ip\": \"203.0.113.101\", \"bytes\": 3000000}\n    ],\n    \"topDestinationIps\": [\n        {\"ip\": \"192.0.2.200\", \"bytes\": 4000000},\n        {\"ip\": \"192.0.2.201\", \"bytes\": 2000000}\n    ],\n    \"anomalyScore\": 0.2\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/network-traffic",
+                "host": ["{{baseUrl}}"],
+                "path": ["network-traffic"]
+              },
+              "description": "Create a new network traffic record"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Network Traffic",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/network-traffic/{{trafficId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["network-traffic", "{{trafficId}}"]
+              },
+              "description": "Delete a network traffic record by ID (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Traffic Summary by Organization",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/network-traffic/summary/by-organization/{{orgId}}?hours=24",
+                "host": ["{{baseUrl}}"],
+                "path": ["network-traffic", "summary", "by-organization", "{{orgId}}"],
+                "query": [
+                  {
+                    "key": "hours",
+                    "value": "24"
+                  }
+                ]
+              },
+              "description": "Get a summary of network traffic for an organization"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Anomalous Traffic",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/network-traffic/anomalies?org_id={{orgId}}&threshold=0.7&hours=24",
+                "host": ["{{baseUrl}}"],
+                "path": ["network-traffic", "anomalies"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "threshold",
+                    "value": "0.7"
+                  },
+                  {
+                    "key": "hours",
+                    "value": "24"
+                  }
+                ]
+              },
+              "description": "Get anomalous network traffic records"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Reports",
+        "item": [
+          {
+            "name": "Get All Reports",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/reports?org_id={{orgId}}&report_type=monthly&status=generated",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "report_type",
+                    "value": "monthly"
+                  },
+                  {
+                    "key": "status",
+                    "value": "generated"
+                  }
+                ]
+              },
+              "description": "Get a list of reports with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Report",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/reports/{{reportId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports", "{{reportId}}"]
+              },
+              "description": "Get a single report by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Report",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"reportType\": \"monthly\",\n    \"title\": \"Monthly Security Report - March 2023\",\n    \"description\": \"Overview of security incidents and vulnerabilities detected in March 2023\",\n    \"period\": {\n        \"startDate\": \"2023-03-01T00:00:00Z\",\n        \"endDate\": \"2023-03-31T23:59:59Z\"\n    }\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/reports",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports"]
+              },
+              "description": "Create a new report"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Report",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"Updated Monthly Security Report - March 2023\",\n    \"description\": \"Comprehensive overview of security incidents and vulnerabilities detected in March 2023\",\n    \"status\": \"draft\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/reports/{{reportId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports", "{{reportId}}"]
+              },
+              "description": "Update a report by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Report",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/reports/{{reportId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports", "{{reportId}}"]
+              },
+              "description": "Delete a report by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Generate Report",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/reports/{{reportId}}/generate",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports", "{{reportId}}", "generate"]
+              },
+              "description": "Generate a report by ID (calculate statistics and create report document)"
+            },
+            "response": []
+          },
+          {
+            "name": "Send Report",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"recipients\": [\"user1@example.com\", \"user2@example.com\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/reports/{{reportId}}/send",
+                "host": ["{{baseUrl}}"],
+                "path": ["reports", "{{reportId}}", "send"]
+              },
+              "description": "Mark a report as sent and record the recipients"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Settings",
+        "item": [
+          {
+            "name": "Get All Settings",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/settings?org_id={{orgId}}&config_type=notification&enabled_only=true",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "config_type",
+                    "value": "notification"
+                  },
+                  {
+                    "key": "enabled_only",
+                    "value": "true"
+                  }
+                ]
+              },
+              "description": "Get a list of settings with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Setting",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/settings/{{settingId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings", "{{settingId}}"]
+              },
+              "description": "Get a single setting by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Setting by Type",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/settings/organization/{{orgId}}/type/notification",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings", "organization", "{{orgId}}", "type", "notification"]
+              },
+              "description": "Get a setting by organization ID and config type"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Setting",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"configType\": \"notification\",\n    \"config\": {\n        \"emailNotifications\": true,\n        \"smsNotifications\": false,\n        \"criticalAlertsOnly\": false,\n        \"recipients\": [\"admin@example.com\", \"security@example.com\"]\n    },\n    \"isEnabled\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/settings",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings"]
+              },
+              "description": "Create a new setting"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Setting",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"config\": {\n        \"emailNotifications\": true,\n        \"smsNotifications\": true,\n        \"criticalAlertsOnly\": true,\n        \"recipients\": [\"admin@example.com\", \"security@example.com\", \"manager@example.com\"]\n    },\n    \"isEnabled\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/settings/{{settingId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings", "{{settingId}}"]
+              },
+              "description": "Update a setting by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Setting",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/settings/{{settingId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings", "{{settingId}}"]
+              },
+              "description": "Delete a setting by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Toggle Setting",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/settings/organization/{{orgId}}/type/notification/toggle?enabled=false",
+                "host": ["{{baseUrl}}"],
+                "path": ["settings", "organization", "{{orgId}}", "type", "notification", "toggle"],
+                "query": [
+                  {
+                    "key": "enabled",
+                    "value": "false"
+                  }
+                ]
+              },
+              "description": "Toggle a setting's enabled status"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "AI Models",
+        "item": [
+          {
+            "name": "Get All AI Models",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/ai-models?model_type=CNN&status=active&threat_type=malware&min_accuracy=0.9",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models"],
+                "query": [
+                  {
+                    "key": "model_type",
+                    "value": "CNN"
+                  },
+                  {
+                    "key": "status",
+                    "value": "active"
+                  },
+                  {
+                    "key": "threat_type",
+                    "value": "malware"
+                  },
+                  {
+                    "key": "min_accuracy",
+                    "value": "0.9"
+                  }
+                ]
+              },
+              "description": "Get a list of AI models with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get AI Model",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/ai-models/{{modelId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models", "{{modelId}}"]
+              },
+              "description": "Get a single AI model by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create AI Model",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Malware Detection Model\",\n    \"type\": \"CNN\",\n    \"version\": \"1.0.0\",\n    \"description\": \"Convolutional Neural Network for malware detection\",\n    \"parameters\": {\n        \"layers\": 5,\n        \"neurons\": [64, 128, 256, 128, 64],\n        \"activation\": \"relu\"\n    },\n    \"trainingMetrics\": {\n        \"epochs\": 100,\n        \"batchSize\": 32\n    },\n    \"accuracy\": 0.95,\n    \"precision\": 0.94,\n    \"recall\": 0.96,\n    \"f1Score\": 0.95,\n    \"falsePositiveRate\": 0.03,\n    \"status\": \"active\",\n    \"threatTypesDetected\": [\"malware\", \"ransomware\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/ai-models",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models"]
+              },
+              "description": "Create a new AI model (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Update AI Model",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"description\": \"Updated Convolutional Neural Network for malware detection\",\n    \"accuracy\": 0.96,\n    \"status\": \"active\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/ai-models/{{modelId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models", "{{modelId}}"]
+              },
+              "description": "Update an AI model by ID (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete AI Model",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/ai-models/{{modelId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models", "{{modelId}}"]
+              },
+              "description": "Delete an AI model by ID (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Active Model for Threat Type",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/ai-models/active/by-threat-type/malware",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models", "active", "by-threat-type", "malware"]
+              },
+              "description": "Get the best active AI model for a specific threat type"
+            },
+            "response": []
+          },
+          {
+            "name": "Deprecate AI Model",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/ai-models/{{modelId}}/deprecate",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models", "{{modelId}}", "deprecate"]
+              },
+              "description": "Mark an AI model as deprecated (admin only)"
+            },
+            "response": []
+          },
+          {
+            "name": "Activate AI Model",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/ai-models/{{modelId}}/activate",
+                "host": ["{{baseUrl}}"],
+                "path": ["ai-models", "{{modelId}}", "activate"]
+              },
+              "description": "Mark an AI model as active (admin only)"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Dashboard Widgets",
+        "item": [
+          {
+            "name": "Get All Dashboard Widgets",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets?org_id={{orgId}}&user_id={{userId}}&widget_type=threatSummary&visible_only=true",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets"],
+                "query": [
+                  {
+                    "key": "org_id",
+                    "value": "{{orgId}}"
+                  },
+                  {
+                    "key": "user_id",
+                    "value": "{{userId}}"
+                  },
+                  {
+                    "key": "widget_type",
+                    "value": "threatSummary"
+                  },
+                  {
+                    "key": "visible_only",
+                    "value": "true"
+                  }
+                ]
+              },
+              "description": "Get a list of dashboard widgets with optional filtering"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Dashboard Widget",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets/{{widgetId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets", "{{widgetId}}"]
+              },
+              "description": "Get a single dashboard widget by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Dashboard Widget",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organizationId\": \"{{orgId}}\",\n    \"userId\": \"{{userId}}\",\n    \"widgetType\": \"threatSummary\",\n    \"position\": {\n        \"x\": 0,\n        \"y\": 0,\n        \"width\": 6,\n        \"height\": 4\n    },\n    \"configuration\": {\n        \"title\": \"Threat Summary\",\n        \"timeRange\": \"7d\",\n        \"showResolved\": true,\n        \"severityFilter\": \"all\"\n    },\n    \"isVisible\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets"]
+              },
+              "description": "Create a new dashboard widget"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Dashboard Widget",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"position\": {\n        \"x\": 6,\n        \"y\": 0,\n        \"width\": 6,\n        \"height\": 4\n    },\n    \"configuration\": {\n        \"title\": \"Updated Threat Summary\",\n        \"timeRange\": \"30d\",\n        \"showResolved\": false,\n        \"severityFilter\": \"critical\"\n    },\n    \"isVisible\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets/{{widgetId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets", "{{widgetId}}"]
+              },
+              "description": "Update a dashboard widget by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Dashboard Widget",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets/{{widgetId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets", "{{widgetId}}"]
+              },
+              "description": "Delete a dashboard widget by ID"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Dashboard Layout",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "[\n    {\n        \"id\": \"{{widgetId}}\",\n        \"position\": {\n            \"x\": 0,\n            \"y\": 0,\n            \"width\": 6,\n            \"height\": 4\n        }\n    },\n    {\n        \"id\": \"anotherWidgetId\",\n        \"position\": {\n            \"x\": 6,\n            \"y\": 0,\n            \"width\": 6,\n            \"height\": 4\n        }\n    }\n]"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets/layout",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets", "layout"]
+              },
+              "description": "Update multiple dashboard widgets' positions at once (for drag-and-drop layouts)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Default Widget Configuration",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/dashboard-widgets/defaults/threatSummary",
+                "host": ["{{baseUrl}}"],
+                "path": ["dashboard-widgets", "defaults", "threatSummary"]
+              },
+              "description": "Get default configuration for a specific widget type"
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Training Data",
+        "item": [
+          {
+            "name": "Get All Training Data",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/training-data?data_type=traffic&status=ready&labelled=true",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data"],
+                "query": [
+                  {
+                    "key": "data_type",
+                    "value": "traffic"
+                  },
+                  {
+                    "key": "status",
+                    "value": "ready"
+                  },
+                  {
+                    "key": "labelled",
+                    "value": "true"
+                  }
+                ]
+              },
+              "description": "Get a list of training datasets with optional filtering (admin or analyst role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Training Data",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/training-data/{{trainingDataId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data", "{{trainingDataId}}"]
+              },
+              "description": "Get a single training dataset by ID (admin or analyst role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Create Training Data",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"dataType\": \"traffic\",\n    \"description\": \"Network traffic data for training anomaly detection models\",\n    \"sourceOrganizations\": [\"{{orgId}}\"],\n    \"dataFormat\": \"CSV\",\n    \"features\": [\"timestamp\", \"source_ip\", \"destination_ip\", \"protocol\", \"bytes\", \"packets\"],\n    \"samples\": 10000,\n    \"labelled\": true,\n    \"dataSplits\": {\n        \"training\": 0.7,\n        \"validation\": 0.15,\n        \"testing\": 0.15\n    },\n    \"preprocessingSteps\": [\"normalization\", \"outlier_removal\"],\n    \"status\": \"collecting\",\n    \"storageLocation\": \"s3://cybersec-training-data/traffic/\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/training-data",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data"]
+              },
+              "description": "Create a new training dataset (admin role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Training Data",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"description\": \"Updated network traffic data for training anomaly detection models\",\n    \"samples\": 15000,\n    \"status\": \"preprocessing\",\n    \"preprocessingSteps\": [\"normalization\", \"outlier_removal\", \"feature_selection\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/training-data/{{trainingDataId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data", "{{trainingDataId}}"]
+              },
+              "description": "Update a training dataset by ID (admin role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Training Data",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/training-data/{{trainingDataId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data", "{{trainingDataId}}"]
+              },
+              "description": "Delete a training dataset by ID (admin role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Update Training Data Status",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/training-data/{{trainingDataId}}/status/ready",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data", "{{trainingDataId}}", "status", "ready"]
+              },
+              "description": "Update a training dataset's status (admin or analyst role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Training Data by Type",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/training-data/by-type/traffic?status=ready",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data", "by-type", "traffic"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "ready"
+                  }
+                ]
+              },
+              "description": "Get training datasets by data type (admin or analyst role required)"
+            },
+            "response": []
+          },
+          {
+            "name": "Add Source Organizations",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{accessToken}}",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"organization_ids\": [\"{{orgId}}\", \"anotherOrgId\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/training-data/{{trainingDataId}}/add-sources",
+                "host": ["{{baseUrl}}"],
+                "path": ["training-data", "{{trainingDataId}}", "add-sources"]
+              },
+              "description": "Add source organizations to a training dataset (admin role required)"
+            },
+            "response": []
+          }

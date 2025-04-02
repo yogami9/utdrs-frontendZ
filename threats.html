@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya SME Cybersecurity - Threats</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            margin-right: 15px;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stats-cards {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .stat-card.critical {
+            border-left: 3px solid #ff5b5c;
+        }
+        
+        .stat-card.high {
+            border-left: 3px solid #ff9f43;
+        }
+        
+        .stat-card.medium {
+            border-left: 3px solid #2196f3;
+        }
+        
+        .stat-card.low {
+            border-left: 3px solid #20c997;
+        }
+        
+        .threats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .threats-table th, .threats-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .threats-table th {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .threats-table tbody tr {
+            transition: all 0.3s;
+        }
+        
+        .threats-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .severity-badge, .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .severity-critical {
+            background-color: rgba(255, 91, 92, 0.2);
+            color: #ff5b5c;
+        }
+        
+        .severity-high {
+            background-color: rgba(255, 159, 67, 0.2);
+            color: #ff9f43;
+        }
+        
+        .severity-medium {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+        
+        .severity-low {
+            background-color: rgba(32, 201, 151, 0.2);
+            color: #20c997;
+        }
+        
+        .status-detected {
+            background-color: rgba(255, 91, 92, 0.2);
+            color: #ff5b5c;
+        }
+        
+        .status-analyzing {
+            background-color: rgba(255, 159, 67, 0.2);
+            color: #ff9f43;
+        }
+        
+        .status-mitigating {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+        
+        .status-resolved {
+            background-color: rgba(32, 201, 151, 0.2);
+            color: #20c997;
+        }
+        
+        .status-false_positive {
+            background-color: rgba(180, 180, 180, 0.2);
+            color: #d0d0d0;
+        }
+        
+        .action-btn {
+            background-color: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .action-btn:hover {
+            color: #22FF85;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover, .pagination a.active {
+            background-color: #22FF85;
+            color: #0f1736;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            margin: 5% auto;
+            padding: 20px;
+            width: 70%;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #22FF85;
+        }
+        
+        .threat-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .threat-info {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .threat-actions {
+            flex: 1;
+            min-width: 250px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .info-group {
+            margin-bottom: 15px;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 16px;
+        }
+        
+        .action-list {
+            list-style: none;
+        }
+        
+        .action-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-item:last-child {
+            border-bottom: none;
+        }
+        
+        .action-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .action-type {
+            font-weight: 600;
+        }
+        
+        .action-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .action-status {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .action-status.completed {
+            color: #20c997;
+        }
+        
+        .action-status.pending {
+            color: #ff9f43;
+        }
+        
+        .action-status.failed {
+            color: #ff5b5c;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+        }
+        
+        .btn-danger {
+            background-color: rgba(255, 91, 92, 0.2);
+            color: #ff5b5c;
+            border: 1px solid #ff5b5c;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .event-timeline {
+            margin-top: 30px;
+        }
+        
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 15px;
+            height: 100%;
+            width: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-icon {
+            position: absolute;
+            left: -50px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(34, 255, 133, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #22FF85;
+        }
+        
+        .timeline-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            padding: 15px;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .timeline-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .timeline-body {
+            font-size: 14px;
+        }
+        
+        /* Role-specific element styles */
+        .admin-only, .manager-only, .analyst-only, .user-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100">
+                <rect width="100" height="100" rx="20" fill="#22FF85" />
+                <path d="M50 20C33.4315 20 20 33.4315 20 50C20 66.5685 33.4315 80 50 80C66.5685 80 80 66.5685 80 50C80 33.4315 66.5685 20 50 20ZM50 25C63.8071 25 75 36.1929 75 50C75 63.8071 63.8071 75 50 75C36.1929 75 25 63.8071 25 50C25 36.1929 36.1929 25 50 25Z" fill="white" />
+                <path d="M45 60L35 50L40 45L45 50L60 35L65 40L45 60Z" fill="white" />
+            </svg>
+            <h1>kenyasmeutdrs</h1>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item admin-only">
+                <a href="organizations.html" class="nav-link">
+                    <i>🏢</i> Organizations
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only">
+                <a href="users.html" class="nav-link">
+                    <i>👥</i> Users
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="devices.html" class="nav-link">
+                    <i>💻</i> Devices
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="threats.html" class="nav-link">
+                    <i>⚠️</i> Threats
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="vulnerabilities.html" class="nav-link">
+                    <i>🛡️</i> Vulnerabilities
+                </a>
+            </li>
+            <li class="nav-item analyst-only user-only admin-only">
+                <a href="ai-models.html" class="nav-link">
+                    <i>🤖</i> AI Models
+                </a>
+            </li>
+            <li class="nav-item non-admin-only">
+                <a href="reports.html" class="nav-link">
+                    <i>📝</i> Reports
+                </a>
+            </li>
+            <li class="nav-item admin-only manager-only">
+                <a href="settings.html" class="nav-link">
+                    <i>⚙️</i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Threats</h1>
+            <div class="user-info">
+                <span class="user-name" id="userName">User</span>
+                <span class="user-role" id="userRole">(Role)</span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Severity</label>
+                <select class="filter-select">
+                    <option value="all">All Severities</option>
+                    <option value="critical">Critical</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Status</label>
+                <select class="filter-select">
+                    <option value="all">All Statuses</option>
+                    <option value="detected">Detected</option>
+                    <option value="analyzing">Analyzing</option>
+                    <option value="mitigating">Mitigating</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="false_positive">False Positive</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Threat Type</label>
+                <select class="filter-select">
+                    <option value="all">All Types</option>
+                    <option value="malware">Malware</option>
+                    <option value="ransomware">Ransomware</option>
+                    <option value="phishing">Phishing</option>
+                    <option value="ddos">DDoS</option>
+                    <option value="intrusion">Intrusion</option>
+                    <option value="dataExfiltration">Data Exfiltration</option>
+                    <option value="anomaly">Anomaly</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Device</label>
+                <select class="filter-select">
+                    <option value="all">All Devices</option>
+                    <option value="server-01">sample-server-01</option>
+                    <option value="ws-01">Workstation-01</option>
+                    <option value="ws-02">Workstation-02</option>
+                    <option value="laptop-01">Laptop-01</option>
+                    <option value="router-01">Router-01</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="stats-cards">
+            <div class="stat-card critical">
+                <div class="stat-title">Critical Threats</div>
+                <div class="stat-value">3</div>
+            </div>
+            
+            <div class="stat-card high">
+                <div class="stat-title">High Threats</div>
+                <div class="stat-value">7</div>
+            </div>
+            
+            <div class="stat-card medium">
+                <div class="stat-title">Medium Threats</div>
+                <div class="stat-value">12</div>
+            </div>
+            
+            <div class="stat-card low">
+                <div class="stat-title">Low Threats</div>
+                <div class="stat-value">5</div>
+            </div>
+        </div>
+        
+        <table class="threats-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Device</th>
+                    <th>Threat Type</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Detected</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>THR-1001</td>
+                    <td>sample-server-01</td>
+                    <td>Ransomware</td>
+                    <td><span class="severity-badge severity-critical">Critical</span></td>
+                    <td><span class="status-badge status-detected">Detected</span></td>
+                    <td>2023-03-07 08:15 AM</td>
+                    <td>
+                        <button class="action-btn view-threat" data-id="THR-1001">👁️</button>
+                        <button class="action-btn">📋</button>
+                        <button class="action-btn analyst-admin-manager-only">🛡️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>THR-1002</td>
+                    <td>Workstation-01</td>
+                    <td>Malware</td>
+                    <td><span class="severity-badge severity-high">High</span></td>
+                    <td><span class="status-badge status-analyzing">Analyzing</span></td>
+                    <td>2023-03-06 15:22 PM</td>
+                    <td>
+                        <button class="action-btn view-threat" data-id="THR-1002">👁️</button>
+                        <button class="action-btn">📋</button>
+                        <button class="action-btn analyst-admin-manager-only">🛡️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>THR-1003</td>
+                    <td>Workstation-02</td>
+                    <td>Phishing</td>
+                    <td><span class="severity-badge severity-medium">Medium</span></td>
+                    <td><span class="status-badge status-mitigating">Mitigating</span></td>
+                    <td>2023-03-06 10:45 AM</td>
+                    <td>
+                        <button class="action-btn view-threat" data-id="THR-1003">👁️</button>
+                        <button class="action-btn">📋</button>
+                        <button class="action-btn analyst-admin-manager-only">🛡️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>THR-1004</td>
+                    <td>Laptop-01</td>
+                    <td>Anomaly</td>
+                    <td><span class="severity-badge severity-low">Low</span></td>
+                    <td><span class="status-badge status-resolved">Resolved</span></td>
+                    <td>2023-03-05 14:30 PM</td>
+                    <td>
+                        <button class="action-btn view-threat" data-id="THR-1004">👁️</button>
+                        <button class="action-btn">📋</button>
+                        <button class="action-btn analyst-admin-manager-only">🛡️</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>THR-1005</td>
+                    <td>Router-01</td>
+                    <td>DDoS</td>
+                    <td><span class="severity-badge severity-critical">Critical</span></td>
+                    <td><span class="status-badge status-mitigating">Mitigating</span></td>
+                    <td>2023-03-05 08:10 AM</td>
+                    <td>
+                        <button class="action-btn view-threat" data-id="THR-1005">👁️</button>
+                        <button class="action-btn">📋</button>
+                        <button class="action-btn analyst-admin-manager-only">🛡️</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <ul class="pagination">
+            <li><a href="#">«</a></li>
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">»</a></li>
+        </ul>
+    </div>
+    
+    <!-- Threat Details Modal -->
+    <div id="threatModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Threat Details: <span id="threatId">THR-1001</span></h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            
+            <div class="threat-detail">
+                <div class="threat-info">
+                    <div class="info-group">
+                        <div class="info-label">Threat Type</div>
+                        <div class="info-value">Ransomware</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Severity</div>
+                        <div class="info-value"><span class="severity-badge severity-critical">Critical</span></div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Status</div>
+                        <div class="info-value"><span class="status-badge status-detected">Detected</span></div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Device</div>
+                        <div class="info-value">sample-server-01 (192.168.1.100)</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Detection Method</div>
+                        <div class="info-value">AI Model (Malware Detection CNN v1.0)</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Detected At</div>
+                        <div class="info-value">2023-03-07 08:15 AM</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Confidence</div>
+                        <div class="info-value">94%</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Source IP</div>
+                        <div class="info-value">185.156.73.42</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Description</div>
+                        <div class="info-value">
+                            Suspicious encrypted files and ransom note detected on file server. Matches pattern of GandCrab ransomware variant. Encrypted files found in multiple directories with .KRAB extension. Ransom note demands 0.5 Bitcoin payment.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="threat-actions">
+                    <h3 class="action-title">Response Actions</h3>
+                    <ul class="action-list">
+                        <li class="action-item">
+                            <div class="action-header">
+                                <div class="action-type">Isolate Device</div>
+                                <div class="action-time">08:17 AM</div>
+                            </div>
+                            <div class="action-status completed">Completed</div>
+                        </li>
+                        
+                        <li class="action-item">
+                            <div class="action-header">
+                                <div class="action-type">Block IP</div>
+                                <div class="action-time">08:18 AM</div>
+                            </div>
+                            <div class="action-status completed">Completed</div>
+                        </li>
+                        
+                        <li class="action-item">
+                            <div class="action-header">
+                                <div class="action-type">Kill Process</div>
+                                <div class="action-time">08:20 AM</div>
+                            </div>
+                            <div class="action-status pending">Pending</div>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="btn btn-primary">Add Response Action</a>
+                    <a href="#" class="btn btn-secondary">Mark as Resolved</a>
+                    <a href="#" class="btn btn-danger">Mark as False Positive</a>
+                </div>
+            </div>
+            
+            <div class="event-timeline">
+                <h3 class="timeline-title">Event Timeline</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">📌</div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">Threat Detected</div>
+                                <div class="timeline-time">2023-03-07 08:15 AM</div>
+                            </div>
+                            <div class="timeline-body">
+                                Ransomware detected on sample-server-01 with critical severity.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🔒</div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">Device Isolated</div>
+                                <div class="timeline-time">2023-03-07 08:17 AM</div>
+                            </div>
+                            <div class="timeline-body">
+                                Device sample-server-01 has been isolated from the network.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🛑</div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">IP Blocked</div>
+                                <div class="timeline-time">2023-03-07 08:18 AM</div>
+                            </div>
+                            <div class="timeline-body">
+                                IP address 185.156.73.42 has been blocked at the firewall.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon">⚙️</div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">Process Kill Initiated</div>
+                                <div class="timeline-time">2023-03-07 08:20 AM</div>
+                            </div>
+                            <div class="timeline-body">
+                                Initiated kill process for PID 4528 (ransomware.exe).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userRole = localStorage.getItem('userRole') || 'user';
+            
+            if (!isAuthenticated) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Set user info in header
+            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            document.getElementById('userRole').textContent = `(${userRole})`;
+            
+            // Show/hide role-specific elements
+            // Show/hide role-specific elements
+const adminElements = document.querySelectorAll('.admin-only');
+const managerElements = document.querySelectorAll('.manager-only');
+const analystElements = document.querySelectorAll('.analyst-only');
+const userElements = document.querySelectorAll('.user-only');
+const nonAdminElements = document.querySelectorAll('.non-admin-only');
+const nonManagerElements = document.querySelectorAll('.non-manager-only');
+
+if (userRole === 'admin') {
+    adminElements.forEach(el => el.style.display = 'block');
+    managerElements.forEach(el => el.style.display = 'block');
+    analystElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'manager') {
+    managerElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'analyst') {
+    analystElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+} else if (userRole === 'user') {
+    userElements.forEach(el => el.style.display = 'block');
+    nonAdminElements.forEach(el => el.style.display = 'block');
+    nonManagerElements.forEach(el => el.style.display = 'block');
+}
+            
+            // Logout handler
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            });
+            
+            // Modal handlers
+            const modal = document.getElementById('threatModal');
+            const closeBtn = document.querySelector('.close-btn');
+            const viewThreatBtns = document.querySelectorAll('.view-threat');
+            
+            viewThreatBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const threatId = this.getAttribute('data-id');
+                    document.getElementById('threatId').textContent = threatId;
+                    modal.style.display = 'block';
+                });
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

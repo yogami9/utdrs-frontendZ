@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya SME Cybersecurity - Users</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            margin-right: 15px;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .add-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .add-btn i {
+            margin-right: 8px;
+        }
+        
+        .add-btn:hover {
+            background-color: #1ae077;
+            transform: translateY(-2px);
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .users-table th, .users-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .users-table th {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .users-table tbody tr {
+            transition: all 0.3s;
+        }
+        
+        .users-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .status-inactive {
+            background-color: rgba(255, 91, 92, 0.2);
+            color: #ff5b5c;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .role-admin {
+            background-color: rgba(34, 255, 133, 0.2);
+            color: #22FF85;
+        }
+        
+        .role-manager {
+            background-color: rgba(32, 201, 246, 0.2);
+            color: #20c9f6;
+        }
+        
+        .role-analyst {
+            background-color: rgba(253, 126, 20, 0.2);
+            color: #fd7e14;
+        }
+        
+        .role-user {
+            background-color: rgba(180, 180, 180, 0.2);
+            color: #d0d0d0;
+        }
+        
+        .action-btn {
+            background-color: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .action-btn:hover {
+            color: #22FF85;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover, .pagination a.active {
+            background-color: #22FF85;
+            color: #0f1736;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a2357 0%, #0f1736 100%);
+            margin: 10% auto;
+            padding: 20px;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #22FF85;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cancel-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .submit-btn {
+            background-color: #22FF85;
+            color: #0f1736;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1ae077;
+        }
+        
+        /* Role-specific element styles */
+        .admin-only, .manager-only, .analyst-only, .user-only {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100">
+                <rect width="100" height="100" rx="20" fill="#22FF85" />
+                <path d="M50 20C33.4315 20 20 33.4315 20 50C20 66.5685 33.4315 80 50 80C66.5685 80 80 66.5685 80 50C80 33.4315 66.5685 20 50 20ZM50 25C63.8071 25 75 36.1929 75 50C75 63.8071 63.8071 75 50 75C36.1929 75 25 63.8071 25 50C25 36.1929 36.1929 25 50 25Z" fill="white" />
+                <path d="M45 60L35 50L40 45L45 50L60 35L65 40L45 60Z" fill="white" />
+            </svg>
+            <h1>kenyasmeutdrs</h1>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i>📊</i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item admin-only">
+                <a href="organizations.html" class="nav-link">
+                    <i>🏢</i> Organizations
+                </a>
+            </li>
+            <li class="nav-item admin-manager-only">
+                <a href="users.html" class="nav-link active">
+                    <i>👥</i> Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="devices.html" class="nav-link">
+                    <i>💻</i> Devices
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="threats.html" class="nav-link">
+                    <i>⚠️</i> Threats
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="vulnerabilities.html" class="nav-link">
+                    <i>🛡️</i> Vulnerabilities
+                </a>
+            </li>
+            <li class="nav-item analyst-admin-manager-only">
+                <a href="ai-models.html" class="nav-link">
+                    <i>🤖</i> AI Models
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">
+                    <i>📝</i> Reports
+                </a>
+            </li>
+            <li class="nav-item admin-manager-only">
+                <a href="settings.html" class="nav-link">
+                    <i>⚙️</i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Users</h1>
+            <div class="user-info">
+                <span class="user-name" id="userName">User</span>
+                <span class="user-role" id="userRole">(Role)</span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content-header">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search users...">
+            </div>
+            
+            <button class="add-btn" id="addUserBtn">
+                <i>➕</i> Add User
+            </button>
+        </div>
+        
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Organization</th>
+                    <th>Last Login</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Admin User</td>
+                    <td>admin@example.com</td>
+                    <td><span class="role-badge role-admin">Admin</span></td>
+                    <td>Sample Kenyan SME</td>
+                    <td>2023-03-07 09:15 AM</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn">🔒</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>John Doe</td>
+                    <td>john.doe@example.com</td>
+                    <td><span class="role-badge role-manager">Manager</span></td>
+                    <td>Sample Kenyan SME</td>
+                    <td>2023-03-07 10:30 AM</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn">🔒</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>jane.smith@example.com</td>
+                    <td><span class="role-badge role-analyst">Analyst</span></td>
+                    <td>Sample Kenyan SME</td>
+                    <td>2023-03-06 02:45 PM</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn">🔒</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Samuel Maina</td>
+                    <td>samuel.maina@example.com</td>
+                    <td><span class="role-badge role-user">User</span></td>
+                    <td>Sample Kenyan SME</td>
+                    <td>2023-03-05 11:20 AM</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn">🔒</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sarah Kamau</td>
+                    <td>sarah.kamau@example.com</td>
+                    <td><span class="role-badge role-user">User</span></td>
+                    <td>Sample Kenyan SME</td>
+                    <td>2023-02-28 09:00 AM</td>
+                    <td><span class="status-badge status-inactive">Inactive</span></td>
+                    <td>
+                        <button class="action-btn">✏️</button>
+                        <button class="action-btn">🗑️</button>
+                        <button class="action-btn">🔓</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <ul class="pagination">
+            <li><a href="#">«</a></li>
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">»</a></li>
+        </ul>
+    </div>
+    
+    <!-- Add/Edit User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add User</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            
+            <form id="userForm">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select id="role" class="form-control" required>
+                                <option value="">Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="analyst">Analyst</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="organization">Organization</label>
+                            <select id="organization" class="form-control" required>
+                                <option value="">Select Organization</option>
+                                <option value="org1">Sample Kenyan SME</option>
+                                <option value="org2">Mombasa Trading Co.</option>
+                                <option value="org3">Kilimo Solutions</option>
+                                <option value="org4">Nakuru Manufacturers</option>
+                                <option value="org5">Eldoret Logistics</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" class="form-control" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication and role
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userRole = localStorage.getItem('userRole') || 'user';
+            
+            if (!isAuthenticated) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Only admin and manager should access this page
+            if (userRole !== 'admin' && userRole !== 'manager') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Set user info in header
+            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            document.getElementById('userRole').textContent = `(${userRole})`;
+            
+            // Show/hide role-specific elements
+            const adminElements = document.querySelectorAll('.admin-only');
+            const managerElements = document.querySelectorAll('.admin-manager-only');
+            const analystElements = document.querySelectorAll('.analyst-admin-manager-only');
+            
+            if (userRole === 'admin') {
+                adminElements.forEach(el => el.style.display = 'block');
+                managerElements.forEach(el => el.style.display = 'block');
+                analystElements.forEach(el => el.style.display = 'block');
+            } else if (userRole === 'manager') {
+                managerElements.forEach(el => el.style.display = 'block');
+                analystElements.forEach(el => el.style.display = 'block');
+            }
+            
+            // Logout handler
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userRole');
+                window.location.href = 'login.html';
+            });
+            
+            // Modal handlers
+            const modal = document.getElementById('userModal');
+            const addUserBtn = document.getElementById('addUserBtn');
+            const closeBtn = document.querySelector('.close-btn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            
+            addUserBtn.addEventListener('click', function() {
+                modal.style.display = 'block';
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Form handler
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Process form data here
+                // For demo, just close the modal
+                modal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
