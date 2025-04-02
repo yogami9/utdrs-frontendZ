@@ -993,143 +993,209 @@
 
     <script>
         // Check authentication
-        document.addEventListener('DOMContentLoaded', function() {
-            const isAuthenticated = localStorage.getItem('isAuthenticated');
-            const userRole = localStorage.getItem('userRole') || 'user';
-            
-            if (!isAuthenticated) {
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // Set user info in header
-            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
-            document.getElementById('userRole').textContent = `(${userRole})`;
-            
-            // Show/hide role-specific elements
-            // Show/hide role-specific elements
-const adminElements = document.querySelectorAll('.admin-only');
-const managerElements = document.querySelectorAll('.manager-only');
-const analystElements = document.querySelectorAll('.analyst-only');
-const userElements = document.querySelectorAll('.user-only');
-const nonAdminElements = document.querySelectorAll('.non-admin-only');
-const nonManagerElements = document.querySelectorAll('.non-manager-only');
+       // Improved script for reports.html modal interactions and form handling
+document.addEventListener('DOMContentLoaded', function() {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const userRole = localStorage.getItem('userRole') || 'user';
+    
+    if (!isAuthenticated) {
+        window.location.href = 'index.html';
+        return;
+    }
+    
+    // Set user info in header
+    document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+    document.getElementById('userRole').textContent = `(${userRole})`;
+    
+    // Show/hide role-specific elements
+    const adminElements = document.querySelectorAll('.admin-only');
+    const managerElements = document.querySelectorAll('.manager-only');
+    const analystElements = document.querySelectorAll('.analyst-only');
+    const userElements = document.querySelectorAll('.user-only');
+    const nonAdminElements = document.querySelectorAll('.non-admin-only');
+    const nonManagerElements = document.querySelectorAll('.non-manager-only');
 
-if (userRole === 'admin') {
-    adminElements.forEach(el => el.style.display = 'block');
-    managerElements.forEach(el => el.style.display = 'block');
-    analystElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'manager') {
-    managerElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'analyst') {
-    analystElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'user') {
-    userElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-}
-            
-            // Logout handler
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                localStorage.removeItem('isAuthenticated');
-                localStorage.removeItem('userRole');
-                window.location.href = 'index.html';
-            });
-            
-            // Create Report Modal handlers
-            const createReportModal = document.getElementById('createReportModal');
-            const createReportBtn = document.getElementById('createReportBtn');
-            const closeCreateBtn = createReportModal.querySelector('.close-btn');
-            const cancelReportBtn = document.getElementById('cancelReportBtn');
-            
-            createReportBtn.addEventListener('click', function() {
-                createReportModal.style.display = 'block';
-            });
-            
-            closeCreateBtn.addEventListener('click', function() {
-                createReportModal.style.display = 'none';
-            });
-            
-            cancelReportBtn.addEventListener('click', function() {
-                createReportModal.style.display = 'none';
-            });
-            
-            // View Report Modal handlers
-            const viewReportModal = document.getElementById('viewReportModal');
-            const viewReportBtns = document.querySelectorAll('.view-report');
-            const closeViewBtn = viewReportModal.querySelector('.close-view-btn');
-            const closeReportBtn = viewReportModal.querySelector('.cancel-btn');
-            
-            viewReportBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const reportId = this.getAttribute('data-id');
-                    viewReportModal.style.display = 'block';
-                });
-            });
-            
-            closeViewBtn.addEventListener('click', function() {
-                viewReportModal.style.display = 'none';
-            });
-            
-            closeReportBtn.addEventListener('click', function() {
-                viewReportModal.style.display = 'none';
-            });
-            
-            // Close modals when clicking outside
-            window.addEventListener('click', function(event) {
-                if (event.target === createReportModal) {
-                    createReportModal.style.display = 'none';
-                }
-                if (event.target === viewReportModal) {
-                    viewReportModal.style.display = 'none';
-                }
-            });
-            
-            // Email chips functionality
-            const emailInput = document.querySelector('.email-input');
-            const emailList = document.querySelector('.email-list');
-            const emailRemoveButtons = document.querySelectorAll('.email-remove');
-            
-            emailInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && this.value.trim() !== '') {
-                    e.preventDefault();
-                    const email = this.value.trim();
-                    // Simple email validation
-                    if (email.includes('@')) {
-                        const chip = document.createElement('div');
-                        chip.className = 'email-chip';
-                        chip.innerHTML = `
-                            <span>${email}</span>
-                            <span class="email-remove">✕</span>
-                        `;
-                        
-                        emailList.insertBefore(chip, this);
-                        this.value = '';
-                        
-                        // Add remove handler to the new chip
-                        chip.querySelector('.email-remove').addEventListener('click', function() {
-                            chip.remove();
-                        });
-                    }
-                }
-            });
-            
-            emailRemoveButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.email-chip').remove();
-                });
-            });
-            
-            // Form submission
-            document.getElementById('reportForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Process form data (in a real app)
-                createReportModal.style.display = 'none';
-            });
+    if (userRole === 'admin') {
+        adminElements.forEach(el => el.style.display = 'block');
+        managerElements.forEach(el => el.style.display = 'block');
+        analystElements.forEach(el => el.style.display = 'block');
+    } else if (userRole === 'manager') {
+        managerElements.forEach(el => el.style.display = 'block');
+        nonAdminElements.forEach(el => el.style.display = 'block');
+    } else if (userRole === 'analyst') {
+        analystElements.forEach(el => el.style.display = 'block');
+        nonAdminElements.forEach(el => el.style.display = 'block');
+        nonManagerElements.forEach(el => el.style.display = 'block');
+    } else if (userRole === 'user') {
+        userElements.forEach(el => el.style.display = 'block');
+        nonAdminElements.forEach(el => el.style.display = 'block');
+        nonManagerElements.forEach(el => el.style.display = 'block');
+    }
+    
+    // Logout handler
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userRole');
+        window.location.href = 'index.html';
+    });
+    
+    // Create Report Modal handlers
+    const createReportModal = document.getElementById('createReportModal');
+    const createReportBtn = document.getElementById('createReportBtn');
+    const closeCreateBtn = createReportModal.querySelector('.close-btn');
+    const cancelReportBtn = document.getElementById('cancelReportBtn');
+    
+    createReportBtn.addEventListener('click', function() {
+        createReportModal.style.display = 'block';
+    });
+    
+    closeCreateBtn.addEventListener('click', function() {
+        createReportModal.style.display = 'none';
+    });
+    
+    cancelReportBtn.addEventListener('click', function() {
+        createReportModal.style.display = 'none';
+    });
+    
+    // View Report Modal handlers
+    const viewReportModal = document.getElementById('viewReportModal');
+    const viewReportBtns = document.querySelectorAll('.view-report');
+    const closeViewBtn = viewReportModal.querySelector('.close-view-btn');
+    const closeReportBtn = viewReportModal.querySelector('.cancel-btn');
+    
+    viewReportBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const reportId = this.getAttribute('data-id');
+            viewReportModal.style.display = 'block';
         });
+    });
+    
+    closeViewBtn.addEventListener('click', function() {
+        viewReportModal.style.display = 'none';
+    });
+    
+    closeReportBtn.addEventListener('click', function() {
+        viewReportModal.style.display = 'none';
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === createReportModal) {
+            createReportModal.style.display = 'none';
+        }
+        if (event.target === viewReportModal) {
+            viewReportModal.style.display = 'none';
+        }
+    });
+    
+    // Email chips functionality
+    const emailInput = document.querySelector('.email-input');
+    const emailList = document.querySelector('.email-list');
+    const emailRemoveButtons = document.querySelectorAll('.email-remove');
+    
+    emailInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && this.value.trim() !== '') {
+            e.preventDefault();
+            const email = this.value.trim();
+            // Simple email validation
+            if (email.includes('@')) {
+                const chip = document.createElement('div');
+                chip.className = 'email-chip';
+                chip.innerHTML = `
+                    <span>${email}</span>
+                    <span class="email-remove">✕</span>
+                `;
+                
+                emailList.insertBefore(chip, this);
+                this.value = '';
+                
+                // Add remove handler to the new chip
+                chip.querySelector('.email-remove').addEventListener('click', function() {
+                    chip.remove();
+                });
+            }
+        }
+    });
+    
+    emailRemoveButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('.email-chip').remove();
+        });
+    });
+    
+    // Form submission handler with more robust validation
+    const reportForm = document.getElementById('reportForm');
+    reportForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate required fields
+        const requiredFields = [
+            'reportTitle', 'reportType', 'startDate', 'endDate', 
+            'includeThreatsSummary', 'includeVulnSummary'
+        ];
+        let isValid = true;
+        
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                isValid = false;
+            } else {
+                field.classList.remove('error');
+            }
+        });
+        
+        // Validate date range
+        const startDate = new Date(document.getElementById('startDate').value);
+        const endDate = new Date(document.getElementById('endDate').value);
+        if (startDate > endDate) {
+            alert('Start date must be before or equal to end date');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            // Collect form data
+            const formData = {
+                title: document.getElementById('reportTitle').value,
+                type: document.getElementById('reportType').value,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                description: document.getElementById('reportDescription').value || '',
+                recipients: Array.from(emailList.querySelectorAll('.email-chip span:first-child'))
+                    .map(el => el.textContent),
+                threatsSummary: document.getElementById('includeThreatsSummary').value === 'yes',
+                vulnerabilitiesSummary: document.getElementById('includeVulnSummary').value === 'yes',
+                complianceStatus: document.getElementById('includeComplianceStatus').value === 'yes',
+                recommendations: document.getElementById('includeRecommendations').value === 'yes'
+            };
+            
+            // In a real application, you would send this data to a backend API
+            console.log('Report Generation Data:', formData);
+            
+            // Simulate successful report generation
+            alert('Report generation initiated successfully!');
+            createReportModal.style.display = 'none';
+            reportForm.reset();
+            
+            // Clear email chips
+            emailList.querySelectorAll('.email-chip').forEach(chip => chip.remove());
+        }
+    });
+    
+    // Download PDF and Send Report buttons in view modal
+    const downloadPdfBtn = viewReportModal.querySelector('.submit-btn:nth-child(2)');
+    const sendReportBtn = viewReportModal.querySelector('.submit-btn:last-child');
+    
+    downloadPdfBtn.addEventListener('click', function() {
+        // Simulate PDF download
+        alert('Downloading report PDF...');
+    });
+    
+    sendReportBtn.addEventListener('click', function() {
+        // Simulate sending report
+        alert('Sending report to recipients...');
+    });
+});
     </script>
 </body>
 </html>

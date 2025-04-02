@@ -1031,91 +1031,380 @@
     </div>
 
     <script>
-        // Check authentication
         document.addEventListener('DOMContentLoaded', function() {
-            const isAuthenticated = localStorage.getItem('isAuthenticated');
-            const userRole = localStorage.getItem('userRole') || 'user';
-            
-            if (!isAuthenticated) {
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // Set user info in header
-            document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
-            document.getElementById('userRole').textContent = `(${userRole})`;
-            
-            // Show/hide role-specific elements
-            // Show/hide role-specific elements
-const adminElements = document.querySelectorAll('.admin-only');
-const managerElements = document.querySelectorAll('.manager-only');
-const analystElements = document.querySelectorAll('.analyst-only');
-const userElements = document.querySelectorAll('.user-only');
-const nonAdminElements = document.querySelectorAll('.non-admin-only');
-const nonManagerElements = document.querySelectorAll('.non-manager-only');
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const userRole = localStorage.getItem('userRole') || 'user';
+    
+    if (!isAuthenticated) {
+        window.location.href = 'index.html';
+        return;
+    }
+    
+    // Set user info in header
+    document.getElementById('userName').textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+    document.getElementById('userRole').textContent = `(${userRole})`;
+    
+    // Show/hide role-specific elements
+    const adminElements = document.querySelectorAll('.admin-only');
+    const managerElements = document.querySelectorAll('.manager-only');
+    const analystElements = document.querySelectorAll('.analyst-only');
+    const userElements = document.querySelectorAll('.user-only');
+    const nonAdminElements = document.querySelectorAll('.non-admin-only');
+    const nonManagerElements = document.querySelectorAll('.non-manager-only');
 
-if (userRole === 'admin') {
-    adminElements.forEach(el => el.style.display = 'block');
-    managerElements.forEach(el => el.style.display = 'block');
-    analystElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'manager') {
-    managerElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'analyst') {
-    analystElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-} else if (userRole === 'user') {
-    userElements.forEach(el => el.style.display = 'block');
-    nonAdminElements.forEach(el => el.style.display = 'block');
-    nonManagerElements.forEach(el => el.style.display = 'block');
-}
-            
-            // Logout handler
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                localStorage.removeItem('isAuthenticated');
-                localStorage.removeItem('userRole');
-                window.location.href = 'index.html';
+    if (userRole === 'admin') {
+        adminElements.forEach(el => el.style.display = 'block');
+        managerElements.forEach(el => el.style.display = 'block');
+        analystElements.forEach(el => el.style.display = 'block');
+    } else if (userRole === 'manager') {
+        managerElements.forEach(el => el.style.display = 'block');
+        nonAdminElements.forEach(el => el.style.display = 'block');
+    } else if (userRole === 'analyst') {
+        analystElements.forEach(el => el.style.display = 'block');
+        nonAdminElements.forEach(el => el.style.display = 'block');
+        nonManagerElements.forEach(el => el.style.display = 'block');
+    } else if (userRole === 'user') {
+        userElements.forEach(el => el.style.display = 'block');
+        nonAdminElements.forEach(el => el.style.display = 'block');
+        nonManagerElements.forEach(el => el.style.display = 'block');
+    }
+    
+    // Logout handler
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userRole');
+        window.location.href = 'index.html';
+    });
+    
+    // Device Modal Handlers
+    const addDeviceModal = document.getElementById('addDeviceModal');
+    const addDeviceBtn = document.getElementById('addDeviceBtn');
+    const closeBtn = document.querySelector('.close-btn');
+    const cancelDeviceBtn = document.getElementById('cancelDeviceBtn');
+    
+    function toggleModal(modal, show = true) {
+        modal.style.display = show ? 'block' : 'none';
+    }
+    
+    if (addDeviceBtn) {
+        addDeviceBtn.addEventListener('click', () => toggleModal(addDeviceModal));
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => toggleModal(addDeviceModal, false));
+    }
+    
+    if (cancelDeviceBtn) {
+        cancelDeviceBtn.addEventListener('click', () => toggleModal(addDeviceModal, false));
+    }
+    
+    // Device Card Interactive Actions
+    const deviceCards = document.querySelectorAll('.device-card');
+    
+    deviceCards.forEach(card => {
+        const detailsBtn = card.querySelector('.device-action');
+        const scanBtn = card.querySelector('.device-action.primary');
+        const manageBtn = card.querySelector('.device-action.analyst-admin-manager-only');
+        
+        // Hover effect
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px)';
+            card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+            card.style.boxShadow = 'none';
+        });
+        
+        // Details Button Interaction
+        if (detailsBtn) {
+            detailsBtn.addEventListener('click', () => {
+                const deviceName = card.querySelector('.device-title').textContent;
+                const deviceType = card.querySelector('.device-type').textContent;
+                const ipAddress = card.querySelector('.info-value:first-child').textContent;
+                
+                // Create a modal or use an existing one to show device details
+                const deviceDetailsModal = createDeviceDetailsModal(deviceName, deviceType, ipAddress);
+                document.body.appendChild(deviceDetailsModal);
+                deviceDetailsModal.style.display = 'block';
             });
-            
-            // Modal handlers
-            const modal = document.getElementById('addDeviceModal');
-            const addDeviceBtn = document.getElementById('addDeviceBtn');
-            const closeBtn = document.querySelector('.close-btn');
-            const cancelDeviceBtn = document.getElementById('cancelDeviceBtn');
-            
-            if (addDeviceBtn) {
-                addDeviceBtn.addEventListener('click', function() {
-                    modal.style.display = 'block';
-                });
-            }
-            
-            closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
+        }
+        
+        // Scan Button Interaction
+        if (scanBtn) {
+            scanBtn.addEventListener('click', () => {
+                scanBtn.disabled = true;
+                scanBtn.textContent = 'Scanning...';
+                scanBtn.style.opacity = '0.5';
+                
+                // Simulate scan process
+                simulateDeviceScan(scanBtn);
             });
-            
-            if (cancelDeviceBtn) {
-                cancelDeviceBtn.addEventListener('click', function() {
-                    modal.style.display = 'none';
-                });
-            }
-            
-            window.addEventListener('click', function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
+        }
+        
+        // Manage Button Interaction (only for admin, manager, analyst)
+        if (manageBtn) {
+            manageBtn.addEventListener('click', () => {
+                if (['admin', 'manager', 'analyst'].includes(userRole)) {
+                    const deviceName = card.querySelector('.device-title').textContent;
+                    openDeviceManagementModal(deviceName);
+                } else {
+                    alert('You do not have permission to manage this device.');
                 }
             });
-            
-            // Form submission
-            const deviceForm = document.getElementById('deviceForm');
-            if (deviceForm) {
-                deviceForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    // Process form data (in a real app)
-                    modal.style.display = 'none';
-                });
+        }
+    });
+    
+    // Device Scan Simulation
+    function simulateDeviceScan(scanBtn) {
+        const progressStages = [
+            'Initializing scan...',
+            'Checking network connectivity...',
+            'Scanning for vulnerabilities...',
+            'Analyzing system configurations...',
+            'Checking installed software...'
+        ];
+        
+        let currentStage = 0;
+        const scanInterval = setInterval(() => {
+            if (currentStage < progressStages.length) {
+                scanBtn.textContent = progressStages[currentStage];
+                currentStage++;
+            } else {
+                clearInterval(scanInterval);
+                scanBtn.textContent = 'Scan Complete';
+                scanBtn.style.backgroundColor = '#22FF85';
+                scanBtn.style.color = '#0f1736';
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    scanBtn.disabled = false;
+                    scanBtn.textContent = 'Scan';
+                    scanBtn.style.opacity = '1';
+                    scanBtn.style.backgroundColor = '';
+                    scanBtn.style.color = '';
+                }, 3000);
+            }
+        }, 1000);
+    }
+    
+    // Create Device Details Modal
+    function createDeviceDetailsModal(deviceName, deviceType, ipAddress) {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Device Details: ${deviceName}</h2>
+                    <button class="close-btn">×</button>
+                </div>
+                <div class="device-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value">${deviceName}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Type:</div>
+                        <div class="detail-value">${deviceType}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">IP Address:</div>
+                        <div class="detail-value">${ipAddress}</div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="close-modal-btn">Close</button>
+                </div>
+            </div>
+        `;
+        
+        // Close button handlers
+        const closeButtons = modal.querySelectorAll('.close-btn, .close-modal-btn');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.removeChild(modal);
+            });
+        });
+        
+        // Close when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
             }
         });
+        
+        return modal;
+    }
+    
+    // Open Device Management Modal
+    function openDeviceManagementModal(deviceName) {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Manage Device: ${deviceName}</h2>
+                    <button class="close-btn">×</button>
+                </div>
+                <div class="management-actions">
+                    <button class="manage-action">Update Configurations</button>
+                    <button class="manage-action">Change Security Settings</button>
+                    <button class="manage-action danger">Isolate Device</button>
+                    <button class="manage-action danger">Remove from Network</button>
+                </div>
+                <div class="modal-actions">
+                    <button class="close-modal-btn">Cancel</button>
+                </div>
+            </div>
+        `;
+        
+        // Action button handlers
+        const actionButtons = modal.querySelectorAll('.manage-action');
+        actionButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.textContent;
+                const confirmMessage = `Are you sure you want to ${action.toLowerCase()} for ${deviceName}?`;
+                
+                if (confirm(confirmMessage)) {
+                    // Simulate action processing
+                    btn.textContent = 'Processing...';
+                    btn.disabled = true;
+                    
+                    setTimeout(() => {
+                        btn.textContent = 'Completed';
+                        btn.style.backgroundColor = '#22FF85';
+                        btn.style.color = '#0f1736';
+                        
+                        setTimeout(() => {
+                            btn.textContent = action;
+                            btn.disabled = false;
+                            btn.style.backgroundColor = '';
+                            btn.style.color = '';
+                        }, 2000);
+                    }, 1500);
+                }
+            });
+        });
+        
+        // Close button handlers
+        const closeButtons = modal.querySelectorAll('.close-btn, .close-modal-btn');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.removeChild(modal);
+            });
+        });
+        
+        // Close when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        document.body.appendChild(modal);
+        modal.style.display = 'block';
+    }
+    
+    // Device Form Submission
+    const deviceForm = document.getElementById('deviceForm');
+    if (deviceForm) {
+        deviceForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                hostname: document.getElementById('hostname').value,
+                deviceType: document.getElementById('deviceType').value,
+                ipAddress: document.getElementById('ipAddress').value,
+                macAddress: document.getElementById('macAddress').value,
+                operatingSystem: document.getElementById('operatingSystem').value,
+                osVersion: document.getElementById('osVersion').value,
+                installedSoftware: document.getElementById('installedSoftware').value.split(',').map(s => s.trim()),
+                isMonitored: document.getElementById('isMonitored').value === 'true',
+                organization: document.getElementById('organization').value
+            };
+            
+            // Simulate device addition process
+            const addDeviceModal = document.getElementById('addDeviceModal');
+            const submitBtn = deviceForm.querySelector('button[type="submit"]');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Adding Device...';
+            
+            setTimeout(() => {
+                // In a real application, this would be an API call
+                console.log('Device Added:', formData);
+                
+                submitBtn.textContent = 'Device Added Successfully';
+                submitBtn.style.backgroundColor = '#22FF85';
+                
+                setTimeout(() => {
+                    addDeviceModal.style.display = 'none';
+                    submitBtn.textContent = 'Add Device';
+                    submitBtn.disabled = false;
+                    submitBtn.style.backgroundColor = '';
+                    deviceForm.reset();
+                }, 2000);
+            }, 1500);
+        });
+    }
+});
+
+// Add some additional CSS for the new interactive elements
+const styleElement = document.createElement('style');
+styleElement.textContent = `
+    .modal .manage-action {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .modal .manage-action:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .modal .manage-action.danger {
+        background-color: rgba(255, 91, 92, 0.2);
+        color: #ff5b5c;
+    }
+    
+    .modal .manage-action:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .device-details {
+        padding: 20px;
+    }
+    
+    .detail-row {
+        display: flex;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .detail-label {
+        flex: 1;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .detail-value {
+        flex: 2;
+    }
+`;
+document.head.appendChild(styleElement);
     </script>
 </body>
 </html>
